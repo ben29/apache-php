@@ -1838,3 +1838,6 @@ video/x-msvideo					avi
 video/x-sgi-movie				movie
 video/x-smv					smv
 x-conference/x-cooltalk				ice
+
+# more
+AddType text/html .php
