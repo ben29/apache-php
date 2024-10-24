@@ -1,15 +1,5 @@
 name: build
-on:
-  workflow_dispatch:
-    inputs:
-      php:
-        type: string
-        description: PHP VERSION
-        required: true
-        default: 8.3.2
-
-  release:
-    types: [released]
+on: [push]
 
 jobs:
   docker:
@@ -29,11 +19,9 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6.9.0
         with:
-          build-args: |
-            PHP_VERSION=${{ github.event.release.tag_name }}
           context: .
           file: ./DockerFile
           push: true
           tags: |
             benhakim2010/php-apache:latest
-            benhakim2010/php-apache:${{ github.event.release.tag_name }}
+            benhakim2010/php-apache:1.0
