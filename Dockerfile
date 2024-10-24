@@ -49,7 +49,7 @@ RUN chown -R nobody:nobody /run /var/lib/nginx /var/log/nginx
 # USER nobody
 
 # Expose the port nginx is reachable on
-EXPOSE 443 , 80
+EXPOSE 443
 
 # Let supervisord start nginx & php-fpm
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
