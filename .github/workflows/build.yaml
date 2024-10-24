@@ -20,7 +20,7 @@ jobs:
         uses: docker/build-push-action@v6.9.0
         with:
           context: .
-          file: ./DockerFile
+          file: ./Dockerfile
           push: true
           tags: |
             benhakim2010/php-apache:latest
