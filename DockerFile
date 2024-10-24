@@ -5,7 +5,7 @@ RUN apt-get update && \
     apt upgrade && \
     apt-get install -y openssl && \
     docker-php-ext-install mysqli && \
-    a2enmod ssl
+    a2enmod rewrite ssl
 
 # Create a self-signed certificate (for development/testing purposes)
 RUN mkdir /etc/apache2/ssl && \
