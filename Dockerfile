@@ -1,3 +1,4 @@
+# https://github.com/TrafeX/docker-php-nginx/tree/master
 FROM alpine:3.20
 
 # Setup document root
@@ -31,6 +32,7 @@ RUN apk add --no-cache \
 COPY config/nginx.conf /etc/nginx/nginx.conf
 # Configure nginx - default server
 COPY config/conf.d /etc/nginx/conf.d/
+COPY server.crt server.key /etc/nginx/
 
 # Configure PHP-FPM
 ENV PHP_INI_DIR /etc/php83
