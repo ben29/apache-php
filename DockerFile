@@ -24,6 +24,7 @@ RUN echo "<VirtualHost *:443>\n \
     > /etc/apache2/sites-available/default-ssl.conf && \
     a2ensite default-ssl
 
+COPY mime.types /etc/apache2/conf-enabled
 # Expose port 443
 EXPOSE 443
 
