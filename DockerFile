@@ -2,7 +2,8 @@ FROM php:8.3.12-apache-bookworm
 
 # Install necessary packages
 RUN apt-get update && \
-    apt-get install -y openssl && \
+    apt-get install -y openssl libmysqli-driver && \
+    docker-php-ext-install mysqli && \
     a2enmod ssl
 
 # Create a self-signed certificate (for development/testing purposes)
