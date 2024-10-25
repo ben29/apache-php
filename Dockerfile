@@ -169,7 +169,10 @@ RUN set -eux; \
         --disable-proxy-wstunnel \
         --disable-proxy-fdpass \
         --disable-vhost-alias; \
-    make && make install;
+    make && make install; \
+    rm -rf /etc/httpd/conf/*;
+
+COPY conf/httpd/* /etc/httpd/conf
 
 # Expose ports 80 and 443
 EXPOSE 80
