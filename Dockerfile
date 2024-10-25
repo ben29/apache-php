@@ -1,12 +1,10 @@
-FROM alpine:3.20
+FROM alpine:3.20.3
 
 # SETTINGS
 ENV HTTPD_PREFIX=/usr/local/apache2
 ENV PATH=$HTTPD_PREFIX/bin:$PATH
 ENV HTTPD_VERSION=2.4.62
 
-# install httpd runtime dependencies
-# https://httpd.apache.org/docs/2.4/install.html#requirements
 RUN set -eux; \
 	apk add --no-cache \
 		apr \
@@ -60,14 +58,19 @@ RUN set -eux; \
 	)"; \
 	apk add --no-network --virtual .httpd-so-deps $deps; \
 	apk del --no-network .build-deps; \
-	\
 	rm -rf /usr/src; \
+    rm -rf /usr/local/apache2/manual; \
+    rm -rf /usr/local/apache2/man; \
+    rm -rf /usr/local/apache2/conf/*; \
 	httpd -v
+
+# COPY CONFIG
+COPY conf/htttpd/* /usr/local/apache2/conf
 
 STOPSIGNAL SIGWINCH
 
 COPY httpd-foreground /usr/local/bin/
 
-EXPOSE 80
+EXPOSE 443
 
 CMD ["httpd-foreground"]
