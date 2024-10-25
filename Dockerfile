@@ -2,7 +2,7 @@
 FROM debian:bookworm-slim
 
 # Settings
-ENV DEPEND wget g++ gcc make ibexpat1-dev libpcre2-dev zlib1g-dev libssl-dev libxml2
+ENV DEPEND wget g++ gcc make libexpat-dev libpcre2-dev zlib1g-dev libssl-dev libxml2
 ARG APR_VERSION=1.7.5
 ARG APR_UTIL_VERSION=1.6.3
 ARG PHP_VERSION=8.3.2
