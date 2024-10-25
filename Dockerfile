@@ -1,12 +1,7 @@
+# https://github.com/docker-library/php/tree/master/8.3/bookworm/apache
 FROM debian:bookworm-slim
 
-# prevent Debian's PHP packages from being installed
-RUN set -eux; \
-	{ \
-		echo 'Package: php*'; \
-		echo 'Pin: release *'; \
-		echo 'Pin-Priority: -1'; \
-	} > /etc/apt/preferences.d/no-debian-php
+# APR
 
 # dependencies required for running "phpize"
 ENV PHPIZE_DEPS \
@@ -188,7 +183,6 @@ RUN set -eux; \
 		--with-sodium=shared \
 		--with-pdo-sqlite=/usr \
 		--with-sqlite3=/usr \
-		\
 		--with-curl \
 		--with-iconv \
 		--with-openssl \
