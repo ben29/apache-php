@@ -40,7 +40,7 @@ RUN set -eux; \
     cd /usr/local/src; \
     wget --no-check-certificate ${APR_UTIL_URL}; \
     tar zvxf apr-util-${APR_UTIL_VERSION}.tar.gz; \
-    cd apr-${APR_UTIL_VERSION}; \
+    cd apr-util-${APR_UTIL_VERSION}; \
     ./configure \
         "--bindir=/usr/bin" \
         "--sbindir=/usr/sbin" \
