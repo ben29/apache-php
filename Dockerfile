@@ -16,9 +16,9 @@ ENV PHP_URL="https://www.php.net/distributions/php-${PHP_VERSION}.tar.gz"
 
 # APR Build
 RUN set -eux; \
-	apt-get update && apt upgrade; \
-	apt-get install -y --no-install-recommends wget; \
-	rm -rf /var/lib/apt/lists/*; \
+    apt-get update && apt upgrade; \
+    apt-get install -y --no-install-recommends wget; \
+    rm -rf /var/lib/apt/lists/*; \
     cd /usr/local/src; \
     wget ${APR_URL}; \
     tar zvxf apr-${APR_VERSION}.tar.gz; \
@@ -32,7 +32,7 @@ RUN set -eux; \
         "--disable-lfs" \
         "--disable-dso" \
         "--disable-timedlocks" \
-        "--disable-ipv6" \
+        "--disable-ipv6"; \
     make && make install;
 
 # APR - UTIL Build
