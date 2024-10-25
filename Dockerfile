@@ -43,7 +43,7 @@ RUN set -eux; \
 	\
 	gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)"; \
 	./configure \
-		--build="$gnuArch" \
+		--build="${gnuArch}" \
 		--prefix="${HTTPD_PREFIX}" \
 		--enable-mods-shared=reallyall \
 		--enable-mpms-shared=all \
@@ -57,7 +57,7 @@ RUN set -eux; \
 			| sort -u \
 			| awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
 	)"; \
-	apk add --no-network --virtual .httpd-so-deps $deps; \
+	apk add --no-network --virtual .httpd-so-deps ${deps}; \
 	apk del --no-network .build-deps; \
 	rm -rf /usr/src; \
     rm -rf /usr/local/apache2/{manual,man,conf}; \
@@ -69,6 +69,9 @@ COPY conf/httpd /usr/local/apache2/conf
 STOPSIGNAL SIGWINCH
 
 COPY httpd-foreground /usr/local/bin/
+
+RUN set -eux; \
+    chmod 777 /usr/local/bin/httpd-foreground;
 
 EXPOSE 443
 
