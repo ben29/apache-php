@@ -1,7 +1,8 @@
 FROM alpine:3.20
 
 # SETTINGS
-ENV PATH /etc/httpd/bin:$PATH
+ENV HTTPD_PREFIX=/usr/local/apache2
+ENV PATH=$HTTPD_PREFIX/bin:$PATH
 ENV HTTPD_VERSION=2.4.62
 
 # install httpd runtime dependencies
@@ -21,9 +22,7 @@ RUN set -eux; \
 		coreutils \
 		dpkg-dev dpkg \
 		gcc \
-		gnupg \
 		libc-dev \
-		patch \
 		curl-dev \
 		jansson-dev \
 		libxml2-dev \
@@ -46,7 +45,7 @@ RUN set -eux; \
 	gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)"; \
 	./configure \
 		--build="$gnuArch" \
-		--prefix="/etc/httpd" \
+		--prefix="${HTTPD_PREFIX}" \
 		--enable-mods-shared=reallyall \
 		--enable-mpms-shared=all \
 	; \
@@ -62,6 +61,7 @@ RUN set -eux; \
 	apk add --no-network --virtual .httpd-so-deps $deps; \
 	apk del --no-network .build-deps; \
 	\
+	rm -rf /usr/src; \
 	httpd -v
 
 STOPSIGNAL SIGWINCH
