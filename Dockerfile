@@ -48,7 +48,7 @@ RUN set -eux; \
         "--libexecdir=/usr/local/libexec" \
         "--libdir=/lib64" \
         "--with-apr=/usr" \
-        "--disable-util-dso" \
+        "--disable-util-dso"; \
     make && make install;
 
 # HTTP2 Build
@@ -70,5 +70,5 @@ RUN set -eux; \
         --disable-examples \
         --disable-hpack-tools \
         --disable-assert \
-        --disable-app \
+        --disable-app; \
     make && make install;
