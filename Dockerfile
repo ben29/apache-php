@@ -5,11 +5,8 @@ ENV HTTPD_PREFIX=/usr/local/apache2
 ENV PATH=$HTTPD_PREFIX/bin:$PATH
 ENV HTTPD_VERSION=2.4.62
 
-RUN set -eux; \
-	apk add --no-cache \
-		apr \
-		apr-util \
-		ca-certificates;
+# COPY FOREGROUND
+COPY httpd-foreground /usr/local/bin/
 
 RUN set -eux; \
     adduser -u 82 -D -S -G www-data www-data; \
@@ -61,17 +58,13 @@ RUN set -eux; \
 	apk del --no-network .build-deps; \
 	rm -rf /usr/src; \
     rm -rf /usr/local/apache2/{manual,man,conf}; \
+    chmod 755 /usr/local/bin/httpd-foreground; \
 	httpd -v
 
 # COPY CONFIG
 COPY conf/httpd /usr/local/apache2/conf
 
 STOPSIGNAL SIGWINCH
-
-COPY httpd-foreground /usr/local/bin/
-
-RUN set -eux; \
-    chmod 777 /usr/local/bin/httpd-foreground;
 
 EXPOSE 443
 
