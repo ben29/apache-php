@@ -14,6 +14,7 @@ RUN set -eux; \
 RUN set -eux; \
     adduser -u 82 -D -S -G www-data www-data; \
     apk update && apk upgrade; \
+    apk add --no-cache apr apr-util ca-certificates; \
 	apk add --no-cache --virtual .build-deps \
 		apr-dev \
 		apr-util-dev \
