@@ -1,6 +1,0 @@
-httpd:2.4.59
-apr:1.7.4
-aprutil:1.6.3
-nghttp2:1.62.0
-nginx:1.27.0
-php:8.3.7
