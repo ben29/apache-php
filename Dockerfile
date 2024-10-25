@@ -24,15 +24,15 @@ RUN set -eux; \
     tar zvxf apr-${APR_VERSION}.tar.gz; \
     cd apr-${APR_VERSION}; \
     ./configure \
-        "--bindir=/usr/bin" \
-        "--sbindir=/usr/sbin" \
-        "--includedir=/usr/include/apr" \
-        "--libexecdir=/usr/local/libexec" \
-        "--libdir=/lib64/apr" \
-        "--disable-lfs" \
-        "--disable-dso" \
-        "--disable-timedlocks" \
-        "--disable-ipv6"; \
+        '--bindir=/usr/bin' \
+        '--sbindir=/usr/sbin' \
+        '--includedir=/usr/include/apr' \
+        '--libexecdir=/usr/local/libexec' \
+        '--libdir=/lib64/apr' \
+        '--disable-lfs' \
+        '--disable-dso' \
+        '--disable-timedlocks' \
+        '--disable-ipv6'; \
     make && make install;
 
 # APR - UTIL Build
