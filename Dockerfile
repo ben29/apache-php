@@ -33,6 +33,7 @@ RUN set -eux; \
 		brotli-dev \
 	; \
     mkdir /usr/src; \
+    cd /usr/src; \
     wget https://dlcdn.apache.org/httpd/httpd-${HTTPD_VERSION}.tar.gz; \
 	tar -xf httpd-${HTTPD_VERSION}.tar.gz; \
 	rm httpd-${HTTPD_VERSION}.tar.gz; \
@@ -57,7 +58,8 @@ RUN set -eux; \
 	apk add --no-network --virtual .httpd-so-deps ${deps}; \
 	apk del --no-network .build-deps; \
 	rm -rf /usr/src; \
-    rm -rf /usr/local/apache2/{manual,man,conf}; \
+    rm -rf /usr/local/apache2/man*; \
+    rm -rf /usr/local/apache2/conf/*; \
     chmod 755 /usr/local/bin/httpd-foreground; \
 	httpd -v
 
