@@ -1,6 +1,7 @@
 FROM alpine:3.20
 
 # SETTINGS
+ENV PATH /etc/httpd/bin:$PATH
 ENV HTTPD_VERSION=2.4.62
 
 # install httpd runtime dependencies
@@ -9,8 +10,7 @@ RUN set -eux; \
 	apk add --no-cache \
 		apr \
 		apr-util \
-		ca-certificates \
-		perl;
+		ca-certificates;
 
 RUN set -eux; \
     adduser -u 82 -D -S -G www-data www-data; \
