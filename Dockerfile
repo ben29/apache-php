@@ -100,7 +100,6 @@ RUN set -eux; \
         --with-mpm=event \
         --with-sslport=443 \
         --with-nghttp2=/usr/include \
-        --enable-systemd \
         --enable-deflate \
         --enable-unique-id \
         --enable-mods-static=most \
