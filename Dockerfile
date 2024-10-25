@@ -59,13 +59,11 @@ RUN set -eux; \
 	apk add --no-network --virtual .httpd-so-deps $deps; \
 	apk del --no-network .build-deps; \
 	rm -rf /usr/src; \
-    rm -rf /usr/local/apache2/manual; \
-    rm -rf /usr/local/apache2/man; \
-    rm -rf /usr/local/apache2/conf/*; \
+    rm -rf /usr/local/apache2/{manual,man,conf}; \
 	httpd -v
 
 # COPY CONFIG
-COPY conf/htttpd/* /usr/local/apache2/conf
+COPY conf/httpd /usr/local/apache2/conf
 
 STOPSIGNAL SIGWINCH
 
