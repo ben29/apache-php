@@ -16,8 +16,8 @@ ENV PHP_URL="https://www.php.net/distributions/php-${PHP_VERSION}.tar.gz"
 
 # APR Build
 RUN set -eux; \
-    apt-get update && apt upgrade; \
-    apt-get install -y --no-install-recommends wget; \
+    apt update && apt upgrade; \
+    apt install -y --no-install-recommends ${DEPEND}; \
     rm -rf /var/lib/apt/lists/*; \
     cd /usr/local/src; \
     wget ${APR_URL}; \
