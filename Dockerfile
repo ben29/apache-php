@@ -38,10 +38,10 @@ RUN set -eux; \
 		brotli-dev \
 	; \
     mkdir /usr/src; \
-    wget https://dlcdn.apache.org/httpd/httpd-2.4.62.tar.gz; \
-	tar -xf httpd-2.4.62.tar.gz; \
-	rm httpd-2.4.62.tar.gz; \
-	cd src; \
+    wget https://dlcdn.apache.org/httpd/httpd-${HTTPD_VERSION}.tar.gz; \
+	tar -xf httpd-${HTTPD_VERSION}.tar.gz; \
+	rm httpd-${HTTPD_VERSION}.tar.gz; \
+	cd ttpd-${HTTPD_VERSION}; \
 	\
 	gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)"; \
 	./configure \
@@ -64,7 +64,6 @@ RUN set -eux; \
 	\
 	httpd -v
 
-# https://httpd.apache.org/docs/2.4/stopping.html#gracefulstop
 STOPSIGNAL SIGWINCH
 
 COPY httpd-foreground /usr/local/bin/
