@@ -1,7 +1,7 @@
 FROM alpine:3.20
 
 # SETTINGS
-ENV HTTPD_VERSION 2.4.63
+ENV HTTPD_VERSION=2.4.62
 
 # install httpd runtime dependencies
 # https://httpd.apache.org/docs/2.4/install.html#requirements
@@ -41,7 +41,7 @@ RUN set -eux; \
     wget https://dlcdn.apache.org/httpd/httpd-${HTTPD_VERSION}.tar.gz; \
 	tar -xf httpd-${HTTPD_VERSION}.tar.gz; \
 	rm httpd-${HTTPD_VERSION}.tar.gz; \
-	cd ttpd-${HTTPD_VERSION}; \
+	cd httpd-${HTTPD_VERSION}; \
 	\
 	gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)"; \
 	./configure \
