@@ -45,9 +45,11 @@ RUN set -eux; \
     find -type f -name '*.a' -delete; \
     make -j install; \
     cd ../; \
-    php -n -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
-    php -n composer-setup.php --install-dir=/etc/php/bin; \
-    rm composer-setup.php; \
+    wget -q https://getcomposer.org/installer; \
+    php -n installer; \
+    mv composer.phar /etc/php/bin; \
+    rm -rf installer; \
+    composer.phar update; \
     # CLEAN
 	deps="$( \
 		scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
