@@ -27,7 +27,7 @@ RUN set -eux; \
 	make -j "$(nproc)"; \
 	make install; \
     mkdir -p /var/www/htdocs; \
-     openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ${HTTPD_PREFIX}/server.key -out ${HTTPD_PREFIX/}/server.crt -config ${HTTPD_PREFIX}/cert.txt; \
+     openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ${HTTPD_PREFIX}/server.key -out ${HTTPD_PREFIX}/server.crt -config ${HTTPD_PREFIX}/cert.txt; \
     # PHP \
     cd ..; \
     wget -q https://www.php.net/distributions/php-${PHP_VERSION}.tar.gz; \
