@@ -21,7 +21,7 @@ spec:
         - name: docker
       containers:
         - name: test
-          image: benhakim2010/php-apache:1.0
+          image: php:apache-bookworm
           imagePullPolicy: Always
           #command: [ "apachectl", "-k start" ]
           ports:
