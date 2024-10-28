@@ -63,6 +63,8 @@ RUN set -eux; \
 
 STOPSIGNAL SIGWINCH
 
+WORKDIR /var/www/htdocs
+
 EXPOSE 80 443
 
 CMD ["/apache2-foreground"]
