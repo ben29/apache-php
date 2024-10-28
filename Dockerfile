@@ -12,8 +12,6 @@ ENV PHP_VERSION=8.3.13
 COPY files/ /
 
 RUN set -eux; \
-    ls /; \
-    chmod 755 /httpd-foreground; \
     # ADD  USER
     adduser -u 82 -D -S -G www-data www-data; \
     apk update && apk upgrade; \
@@ -49,8 +47,9 @@ RUN set -eux; \
 	rm -rf /usr/src; \
     rm -rf /usr/local/apache2/man*; \
     rm -rf /usr/local/apache2/conf/*; \
+    rm -rf /conf; \
     mv /conf/httpd/* /usr/local/apache2/conf/; \
-    chmod 755 /httpd-foreground; \
+    chmod 755 /apache2-foreground; \
 	httpd -v;
 
 STOPSIGNAL SIGWINCH
