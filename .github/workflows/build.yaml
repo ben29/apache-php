@@ -1,6 +1,7 @@
 name: build
-on: [push]
-
+on:
+  release:
+    types: [ released ]
 jobs:
   docker:
     runs-on: ubuntu-latest

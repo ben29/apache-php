@@ -44,8 +44,9 @@ RUN set -eux; \
     make -j $(nproc); \
     find -type f -name '*.a' -delete; \
     make -j install; \
+    cd ../; \
     php -n -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
-    php -n composer-setup.php --install-dir=/usr/local/bin --quiet; \
+    php -n composer-setup.php --install-dir=/usr/local/bin; \
     rm composer-setup.php; \
     # CLEAN
 	deps="$( \
