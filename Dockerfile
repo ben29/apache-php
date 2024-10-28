@@ -27,6 +27,7 @@ RUN set -eux; \
 	make -j "$(nproc)"; \
 	make install; \
     mkdir -p /var/www/htdocs; \
+     openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ${HTTPD_PREFIX}/server.key -out ${HTTPD_PREFIX/}server.crt -config ${HTTPD_PREFIX}/cert.txt; \
     # PHP \
     cd ..; \
     wget -q https://www.php.net/distributions/php-${PHP_VERSION}.tar.gz; \
@@ -51,12 +52,12 @@ RUN set -eux; \
     mv /conf/httpd/* /usr/local/apache2/conf/; \
     chmod 755 /apache2-foreground; \
     rm -rf /conf; \
-    ln -sfT /dev/stderr /var/log/local.error.log; \
-    ln -sfT /dev/stdout /var/log/local.log; \
+    ln -sfT /dev/stderr /var/log/error_log; \
+    ln -sfT /dev/stdout /var/log/access_log; \
 	httpd -v;
 
 STOPSIGNAL SIGWINCH
 
-EXPOSE 443
+EXPOSE 80 443
 
 CMD ["/apache2-foreground"]
