@@ -49,7 +49,6 @@ RUN set -eux; \
     php -n installer; \
     mv composer.phar /etc/php/bin; \
     rm -rf installer; \
-    composer.phar update; \
     # CLEAN
 	deps="$( \
 		scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
