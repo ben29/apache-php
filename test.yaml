@@ -17,16 +17,13 @@ spec:
         name: test
     spec:
       terminationGracePeriodSeconds: 1
+      imagePullSecrets:
+        - name: docker
       containers:
         - name: test
-          image: benhakim2010/php-apache:1.0
+          image: registry.hub.docker.com/php:apache-bookworm
           imagePullPolicy: Always
-          command: [ apachectl -D FOREGROUND ]
-          #lifecycle:
-          #  postStart:
-          #    exec:
-          #      command: [ "sh", "-c", "mkdir -p /var/www/htdocs" ]
-          #command: [ "sh", "-c", "while true; do echo 'Hello, Kubernetes!'; sleep 5; done" ]
+          #command: [ "apache2", "-DFOREGROUND" ]
           ports:
             - name: http
               protocol: TCP

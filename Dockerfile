@@ -55,4 +55,4 @@ STOPSIGNAL SIGWINCH
 
 EXPOSE 443
 
-CMD ["apachectl", "-D", "FOREGROUND"]
+CMD ["/apache2-foreground"]
