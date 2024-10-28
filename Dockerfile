@@ -18,7 +18,7 @@ RUN set -eux; \
 	apk add --no-cache --virtual .build-deps $DEPEND; \
     mkdir /usr/src; \
     cd /usr/src; \
-    wget https://dlcdn.apache.org/httpd/httpd-${HTTPD_VERSION}.tar.gz; \
+    wget -q https://dlcdn.apache.org/httpd/httpd-${HTTPD_VERSION}.tar.gz; \
 	tar -xf httpd-${HTTPD_VERSION}.tar.gz; \
 	rm httpd-${HTTPD_VERSION}.tar.gz; \
 	cd httpd-${HTTPD_VERSION}; \
@@ -27,7 +27,7 @@ RUN set -eux; \
 	make install; \
     # PHP \
     cd ..; \
-    wget https://www.php.net/distributions/php-${PHP_VERSION}.tar.gz; \
+    wget -q https://www.php.net/distributions/php-${PHP_VERSION}.tar.gz; \
     tar zxf php-${PHP_VERSION}.tar.gz; \
     cd php-${PHP_VERSION}; \
     sh /configure/php.sh; \
@@ -46,15 +46,12 @@ RUN set -eux; \
 	rm -rf /usr/src; \
     rm -rf /usr/local/apache2/man*; \
     rm -rf /usr/local/apache2/conf/*; \
-    chmod 755 /usr/local/bin/httpd-foreground; \
+    mv /conf/httpd/* /usr/local/apache2/conf/; \
+    chmod 755 /httpd-foreground; \
 	httpd -v;
-
-
-# COPY CONFIG
-# COPY conf/httpd /usr/local/apache2/conf
 
 STOPSIGNAL SIGWINCH
 
 EXPOSE 443
 
-CMD ["httpd-foreground"]
+ENTRYPOINT ["/httpd-foreground"]
