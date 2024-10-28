@@ -22,9 +22,7 @@ RUN set -eux; \
 	tar -xf httpd-${HTTPD_VERSION}.tar.gz; \
 	rm httpd-${HTTPD_VERSION}.tar.gz; \
 	cd httpd-${HTTPD_VERSION}; \
-    ls /; \
-    sh /files/conifgure/httpd.sh; \
-    exit; \
+    sh /conifgure/httpd.sh; \
 	make -j "$(nproc)"; \
 	make install; \
     # PHP \
