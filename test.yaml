@@ -21,7 +21,7 @@ spec:
         - name: docker
       containers:
         - name: test
-          image: registry.hub.docker.com/php:apache-bookworm
+          image: docker.io/php:apache-bookworm
           imagePullPolicy: Always
           #command: [ "apache2", "-DFOREGROUND" ]
           ports:

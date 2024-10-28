@@ -47,9 +47,9 @@ RUN set -eux; \
 	rm -rf /usr/src; \
     rm -rf /usr/local/apache2/man*; \
     rm -rf /usr/local/apache2/conf/*; \
-    rm -rf /conf; \
     mv /conf/httpd/* /usr/local/apache2/conf/; \
     chmod 755 /apache2-foreground; \
+    rm -rf /conf; \
 	httpd -v;
 
 STOPSIGNAL SIGWINCH
