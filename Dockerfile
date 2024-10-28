@@ -27,11 +27,11 @@ RUN set -eux; \
 	make -j "$(nproc)"; \
 	make -j "$(nproc)" install; \
     mkdir -p /var/www/htdocs; \
+    chown -R www-data:www-data /var/www/htdocs; \
     rm -rf /usr/local/apache2/man*; \
     rm -rf /usr/local/apache2/conf/*; \
     mv /conf/httpd/* /usr/local/apache2/conf/; \
     chmod 755 /apache2-foreground; \
-    rm -rf /conf; \
     ln -sfT /dev/stderr /var/log/error_log; \
     ln -sfT /dev/stdout /var/log/access_log; \
     openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ${HTTPD_PREFIX}/server.key -out ${HTTPD_PREFIX}/server.crt -config ${HTTPD_PREFIX}/conf/cert.txt; \
@@ -44,6 +44,7 @@ RUN set -eux; \
     make -j $(nproc); \
     find -type f -name '*.a' -delete; \
     make -j install; \
+    cp conf/php/php.ini /etc/php/lib; \
     cd ../; \
     wget -q https://getcomposer.org/installer; \
     php -n installer; \
@@ -59,6 +60,7 @@ RUN set -eux; \
 	apk add --no-network --virtual .httpd-so-deps ${deps}; \
 	apk del --no-network .build-deps; \
 	rm -rf /usr/src; \
+    rm -rf /conf; \
 	httpd -v;
 
 STOPSIGNAL SIGWINCH
