@@ -1,6 +1,6 @@
 FROM alpine:3.20.3
 
-ENV DEPEND="apr-dev apr-util-dev libc-dev pcre-dev nghttp2-dev make ca-certificates gcc perl"
+ENV DEPEND="apr-dev apr-util-dev libc-dev pcre-dev nghttp2-dev make ca-certificates gcc perl libxml2-dev curl-dev libpng-dev oniguruma-dev libzip-dev"
 
 # SETTINGS
 ENV HTTPD_PREFIX=/usr/local/apache2
