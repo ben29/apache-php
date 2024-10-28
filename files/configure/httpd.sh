@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)";
+#gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)";
 HTTPD_PREFIX=/usr/local/apache2
 
 ./configure \

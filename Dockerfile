@@ -22,13 +22,7 @@ RUN set -eux; \
 	tar -xf httpd-${HTTPD_VERSION}.tar.gz; \
 	rm httpd-${HTTPD_VERSION}.tar.gz; \
 	cd httpd-${HTTPD_VERSION}; \
-	gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)"; \
-	./configure \
-		--build="${gnuArch}" \
-		--prefix="${HTTPD_PREFIX}" \
-		--enable-mods-shared=reallyall \
-		--enable-mpms-shared=all \
-	; \
+    sh /files/conifgure/httpd.sh; \
     exit; \
 	make -j "$(nproc)"; \
 	make install; \
