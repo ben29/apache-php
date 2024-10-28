@@ -12,6 +12,8 @@ ENV PHP_VERSION=8.3.13
 COPY files/ /
 
 RUN set -eux; \
+    ls /; \
+    chmod 755 /httpd-foreground; \
     # ADD  USER
     adduser -u 82 -D -S -G www-data www-data; \
     apk update && apk upgrade; \
