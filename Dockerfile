@@ -25,6 +25,7 @@ RUN set -eux; \
     sh /configure/httpd.sh; \
 	make -j "$(nproc)"; \
 	make install; \
+    mkdir -p /var/www/htdocs; \
     # PHP \
     cd ..; \
     wget -q https://www.php.net/distributions/php-${PHP_VERSION}.tar.gz; \
