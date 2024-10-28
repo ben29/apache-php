@@ -46,7 +46,7 @@ RUN set -eux; \
     make -j install; \
     cd ../; \
     php -n -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
-    php -n composer-setup.php --install-dir=/usr/local/bin; \
+    php -n composer-setup.php --install-dir=/etc/php/bin; \
     rm composer-setup.php; \
     # CLEAN
 	deps="$( \
