@@ -30,45 +30,7 @@ RUN set -eux; \
     wget https://www.php.net/distributions/php-${PHP_VERSION}.tar.gz; \
     tar zxf php-${PHP_VERSION}.tar.gz; \
     cd php-${PHP_VERSION}; \
-    './configure' \
-        '--build=x86_64-linux-gnu' \
-        'build_alias=x86_64-linux-gnu' \
-        '--with-libdir=lib/x86_64-linux-gnu' \
-        "--with-mysqli=mysqlnd" \
-        "--with-pdo-mysql=mysqlnd" \
-        '--with-config-file-path=/usr/local/etc/php' \
-        '--with-config-file-scan-dir=/usr/local/etc/php/conf.d' \
-        "--with-fpm-user=www-data" \
-        "--with-fpm-group=www-data" \
-        "--with-openssl" \
-        "--with-iconv" \
-        "--with-curl" \
-        "--with-zlib" \
-        "--with-libxml" \
-        "--with-zip" \
-        "--with-sodium" \
-        "--with-apxs2" \
-        "--enable-filter" \
-        "--enable-ctype" \
-        "--enable-xml" \
-        "--enable-tokenizer" \
-        "--enable-dom" \
-        "--enable-simplexml" \
-        "--enable-calendar" \
-        "--enable-pdo" \
-        "--enable-phar" \
-        "--enable-session" \
-        "--enable-mbstring" \
-        "--enable-bcmath" \
-        "--enable-exif" \
-        "--enable-fileinfo" \
-        "--enable-gd" \
-        "--enable-intl" \
-        "--enable-zts" \
-        "--enable-ipv6" \
-        "--disable-cgi" \
-        "--disable-phpdbg" \
-        "--disable-all"; \
+    sh /configure/php.sh; \
     make; \
     find -type f -name '*.a' -delete; \
     make install; \

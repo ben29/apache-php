@@ -7,8 +7,6 @@ HTTPD_PREFIX=/usr/local/apache2
 		--build="${gnuArch}" \
 		--prefix="${HTTPD_PREFIX}" \
     --with-mpm=event \
-    --with-sslport=443 \
-    --with-nghttp2=/usr/include \
     --enable-deflate \
     --enable-unique-id \
     --enable-mods-static=most \
@@ -21,6 +19,7 @@ HTTPD_PREFIX=/usr/local/apache2
     --enable-http2 \
     --enable-allowmethods \
     --enable-proxy-fcgi \
+    --enable-so \
     --disable-actions \
     --disable-authn-socache \
     --disable-file-cache \
