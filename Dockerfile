@@ -1,3 +1,4 @@
+# https://github.com/docker-library/php/blob/master/8.3/bookworm/apache/Dockerfile
 FROM alpine:3.20.3
 
 ENV DEPEND="apr-dev apr-util-dev libc-dev pcre-dev nghttp2-dev make ca-certificates gcc perl libxml2-dev curl-dev libpng-dev oniguruma-dev libzip-dev"
@@ -50,6 +51,8 @@ RUN set -eux; \
     mv /conf/httpd/* /usr/local/apache2/conf/; \
     chmod 755 /apache2-foreground; \
     rm -rf /conf; \
+    ln -sfT /dev/stderr /var/log/local.error.log; \
+    ln -sfT /dev/stdout /var/log/local.log; \
 	httpd -v;
 
 STOPSIGNAL SIGWINCH
