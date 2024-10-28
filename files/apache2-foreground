@@ -4,4 +4,4 @@ set -e
 # Apache gets grumpy about PID files pre-existing
 rm -f /var/run/httpd.pid
 
-exec apache2 -DFOREGROUND "$@"
+exec apachectl -D FOREGROUND "$@"
