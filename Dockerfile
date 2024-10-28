@@ -96,7 +96,7 @@ RUN set -eux; \
 
 
 # COPY CONFIG
-COPY conf/httpd /usr/local/apache2/conf
+# COPY conf/httpd /usr/local/apache2/conf
 
 STOPSIGNAL SIGWINCH
 
