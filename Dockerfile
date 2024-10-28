@@ -4,6 +4,7 @@ FROM alpine:3.20.3
 ENV HTTPD_PREFIX=/usr/local/apache2
 ENV PATH=$HTTPD_PREFIX/bin:$PATH
 ENV HTTPD_VERSION=2.4.62
+ENV PHP_VERSION=8.3.13
 
 # COPY FOREGROUND
 COPY httpd-foreground /usr/local/bin/
@@ -47,6 +48,54 @@ RUN set -eux; \
 	; \
 	make -j "$(nproc)"; \
 	make install; \
+    # PHP \
+    cd ..; \
+    wget https://www.php.net/distributions/php-${PHP_VERSION}.tar.gz; \
+    tar zxf php-${PHP_VERSION}.tar.gz; \
+    cd php-${PHP_VERSION}; \
+    './configure' \
+        '--build=x86_64-linux-gnu' \
+        'build_alias=x86_64-linux-gnu' \
+        '--with-libdir=lib/x86_64-linux-gnu' \
+        "--with-mysqli=mysqlnd" \
+        "--with-pdo-mysql=mysqlnd" \
+        '--with-config-file-path=/usr/local/etc/php' \
+        '--with-config-file-scan-dir=/usr/local/etc/php/conf.d' \
+        "--with-fpm-user=www-data" \
+        "--with-fpm-group=www-data" \
+        "--with-openssl" \
+        "--with-iconv" \
+        "--with-curl" \
+        "--with-zlib" \
+        "--with-libxml" \
+        "--with-zip" \
+        "--with-sodium" \
+        "--with-apxs2" \
+        "--enable-filter" \
+        "--enable-ctype" \
+        "--enable-xml" \
+        "--enable-tokenizer" \
+        "--enable-dom" \
+        "--enable-simplexml" \
+        "--enable-calendar" \
+        "--enable-pdo" \
+        "--enable-phar" \
+        "--enable-session" \
+        "--enable-mbstring" \
+        "--enable-bcmath" \
+        "--enable-exif" \
+        "--enable-fileinfo" \
+        "--enable-gd" \
+        "--enable-intl" \
+        "--enable-zts" \
+        "--enable-ipv6" \
+        "--disable-cgi" \
+        "--disable-phpdbg" \
+        "--disable-all"; \
+    make; \
+    find -type f -name '*.a' -delete; \
+    make install; \
+    # CLEAN
 	deps="$( \
 		scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
 			| tr ',' '\n' \
@@ -59,7 +108,8 @@ RUN set -eux; \
     rm -rf /usr/local/apache2/man*; \
     rm -rf /usr/local/apache2/conf/*; \
     chmod 755 /usr/local/bin/httpd-foreground; \
-	httpd -v
+	httpd -v;
+
 
 # COPY CONFIG
 COPY conf/httpd /usr/local/apache2/conf

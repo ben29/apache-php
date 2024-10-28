@@ -1,11 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alpine
+  namespace: default
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      name: test
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        name: test
+    spec:
+      terminationGracePeriodSeconds: 1
+      containers:
+        - name: test
+          image: benhakim2010/php-apache:1.0
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              protocol: TCP
+              containerPort: 80
+            - name: https
+              protocol: TCP
+              containerPort: 443
+            - name: admin
+              containerPort: 7080
+---
+kind: Service
 apiVersion: v1
-kind: Pod
 metadata:
   name: ols
-  namespace: exchizo
 spec:
-  containers:
-    - name: ols
-      image: litespeedtech/openlitespeed:1.8.2-lsphp83
-      imagePullPolicy: Always
-      #command: ["sh", "-c", "while true; do echo Hello from Alpine!; sleep 5; done"]
+  selector:
+    name: test
+  ports:
+    - protocol: TCP
+      port: 80
+      name: http
+    - protocol: TCP
+      port: 443
+      name: https
+    - protocol: TCP
+      port: 7080
+      name: admin
