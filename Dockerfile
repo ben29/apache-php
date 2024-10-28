@@ -44,7 +44,7 @@ RUN set -eux; \
     make -j $(nproc); \
     find -type f -name '*.a' -delete; \
     make -j install; \
-    cp conf/php/php.ini /etc/php/lib; \
+    cp /conf/php/php.ini /etc/php/lib; \
     cd ../; \
     wget -q https://getcomposer.org/installer; \
     php -n installer; \
