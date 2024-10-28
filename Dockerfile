@@ -38,7 +38,6 @@ RUN set -eux; \
 	tar -xf httpd-${HTTPD_VERSION}.tar.gz; \
 	rm httpd-${HTTPD_VERSION}.tar.gz; \
 	cd httpd-${HTTPD_VERSION}; \
-	\
 	gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)"; \
 	./configure \
 		--build="${gnuArch}" \
@@ -48,7 +47,6 @@ RUN set -eux; \
 	; \
 	make -j "$(nproc)"; \
 	make install; \
-    \
 	deps="$( \
 		scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
 			| tr ',' '\n' \
