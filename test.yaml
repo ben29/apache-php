@@ -19,7 +19,7 @@ spec:
       terminationGracePeriodSeconds: 1
       containers:
         - name: test
-          image: benhakim2010/php-apache:1.0
+          image: alpine
           imagePullPolicy: Always
           command: [ "sh", "-c", "while true; do echo 'Hello, Kubernetes!'; sleep 5; done" ]
           ports:

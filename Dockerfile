@@ -1,39 +1,21 @@
 FROM alpine:3.20.3
 
+ENV DEPEND="apr-dev apr-util-dev libc-dev pcre-dev nghttp2-dev make ca-certificates"
+
 # SETTINGS
 ENV HTTPD_PREFIX=/usr/local/apache2
 ENV PATH=$HTTPD_PREFIX/bin:$PATH
 ENV HTTPD_VERSION=2.4.62
 ENV PHP_VERSION=8.3.13
 
-# COPY FOREGROUND
-COPY httpd-foreground /usr/local/bin/
+# COPY FILES
+COPY files /
 
 RUN set -eux; \
+    # ADD  USER
     adduser -u 82 -D -S -G www-data www-data; \
     apk update && apk upgrade; \
-    apk add --no-cache apr apr-util ca-certificates; \
-	apk add --no-cache --virtual .build-deps \
-		apr-dev \
-		apr-util-dev \
-		coreutils \
-		dpkg-dev dpkg \
-		gcc \
-		libc-dev \
-		curl-dev \
-		jansson-dev \
-		libxml2-dev \
-		lua-dev \
-		make \
-		nghttp2-dev \
-		openssl \
-		openssl-dev \
-		pcre-dev \
-		tar \
-		zlib-dev \
-		brotli-dev \
-        libpng-dev \
-	; \
+	apk add --no-cache --virtual .build-deps $DEPEND; \
     mkdir /usr/src; \
     cd /usr/src; \
     wget https://dlcdn.apache.org/httpd/httpd-${HTTPD_VERSION}.tar.gz; \
@@ -47,6 +29,7 @@ RUN set -eux; \
 		--enable-mods-shared=reallyall \
 		--enable-mpms-shared=all \
 	; \
+    exit; \
 	make -j "$(nproc)"; \
 	make install; \
     # PHP \

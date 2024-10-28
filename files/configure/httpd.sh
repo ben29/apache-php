@@ -1,25 +1,14 @@
 #!/usr/bin/env bash
 
+gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)";
+HTTPD_PREFIX=/usr/local/apache2
+
 ./configure \
-    --prefix=/etc/httpd \
-    --exec-prefix=/etc/httpd \
-    --bindir=/usr/bin \
-    --sbindir=/usr/sbin \
-    --sysconfdir=/etc/httpd/conf \
-    --includedir=/usr/include/apache \
-    --libexecdir=/usr/local/libexec \
-    --libdir=/lib64 \
-    --mandir=/usr/share/man \
-    --datadir=/var/www \
-    --localstatedir=/var \
-    --with-apr=/usr \
-    --with-pcre=/usr \
-    --with-z=/usr/local \
-    --with-ssl=/usr \
+		--build="${gnuArch}" \
+		--prefix="${HTTPD_PREFIX}" \
     --with-mpm=event \
     --with-sslport=443 \
     --with-nghttp2=/usr/include \
-    --enable-systemd \
     --enable-deflate \
     --enable-unique-id \
     --enable-mods-static=most \
