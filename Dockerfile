@@ -34,7 +34,7 @@ RUN set -eux; \
     rm -rf /conf; \
     ln -sfT /dev/stderr /var/log/error_log; \
     ln -sfT /dev/stdout /var/log/access_log; \
-    openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ${HTTPD_PREFIX}/server.key -out ${HTTPD_PREFIX}/server.crt -config ${HTTPD_PREFIX}/cert.txt; \
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ${HTTPD_PREFIX}/server.key -out ${HTTPD_PREFIX}/server.crt -config ${HTTPD_PREFIX}/conf/cert.txt; \
     # PHP \
     cd ..; \
     wget -q https://www.php.net/distributions/php-${PHP_VERSION}.tar.gz; \
