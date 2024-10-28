@@ -23,7 +23,7 @@ spec:
         - name: test
           image: benhakim2010/php-apache:1.0
           imagePullPolicy: Always
-          command: ["sleep", "3600"]
+          #command: ["sleep", "3600"]
           #command: [ "apachectl", "-k start" ]
           ports:
             - name: http

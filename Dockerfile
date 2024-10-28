@@ -25,7 +25,7 @@ RUN set -eux; \
 	cd httpd-${HTTPD_VERSION}; \
     sh /configure/httpd.sh; \
 	make -j "$(nproc)"; \
-	make install; \
+	make -j "$(nproc)" install; \
     mkdir -p /var/www/htdocs; \
     rm -rf /usr/local/apache2/man*; \
     rm -rf /usr/local/apache2/conf/*; \
@@ -41,9 +41,9 @@ RUN set -eux; \
     tar zxf php-${PHP_VERSION}.tar.gz; \
     cd php-${PHP_VERSION}; \
     sh /configure/php.sh; \
-    make; \
+    make -j $(nproc); \
     find -type f -name '*.a' -delete; \
-    make install; \
+    make -j install; \
     # CLEAN
 	deps="$( \
 		scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
