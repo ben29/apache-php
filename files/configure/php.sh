@@ -5,7 +5,7 @@ gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)";
 ./configure \
     "--build=${gnuArch}" \
     "--prefix=/etc/php" \
-    "--with-apxs2" \
+    "--with-apxs2=/usr/local/apache2/bin/apxs" \
     "--with-mysql-sock=/var/lib/mysql/mysql.sock" \
     "--with-mysqli=mysqlnd" \
     "--with-pdo-mysql=mysqlnd" \
