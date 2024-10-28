@@ -27,7 +27,14 @@ RUN set -eux; \
 	make -j "$(nproc)"; \
 	make install; \
     mkdir -p /var/www/htdocs; \
-     openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ${HTTPD_PREFIX}/server.key -out ${HTTPD_PREFIX}/server.crt -config ${HTTPD_PREFIX}/cert.txt; \
+    rm -rf /usr/local/apache2/man*; \
+    rm -rf /usr/local/apache2/conf/*; \
+    mv /conf/httpd/* /usr/local/apache2/conf/; \
+    chmod 755 /apache2-foreground; \
+    rm -rf /conf; \
+    ln -sfT /dev/stderr /var/log/error_log; \
+    ln -sfT /dev/stdout /var/log/access_log; \
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ${HTTPD_PREFIX}/server.key -out ${HTTPD_PREFIX}/server.crt -config ${HTTPD_PREFIX}/cert.txt; \
     # PHP \
     cd ..; \
     wget -q https://www.php.net/distributions/php-${PHP_VERSION}.tar.gz; \
@@ -47,13 +54,6 @@ RUN set -eux; \
 	apk add --no-network --virtual .httpd-so-deps ${deps}; \
 	apk del --no-network .build-deps; \
 	rm -rf /usr/src; \
-    rm -rf /usr/local/apache2/man*; \
-    rm -rf /usr/local/apache2/conf/*; \
-    mv /conf/httpd/* /usr/local/apache2/conf/; \
-    chmod 755 /apache2-foreground; \
-    rm -rf /conf; \
-    ln -sfT /dev/stderr /var/log/error_log; \
-    ln -sfT /dev/stdout /var/log/access_log; \
 	httpd -v;
 
 STOPSIGNAL SIGWINCH
