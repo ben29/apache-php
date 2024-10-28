@@ -55,4 +55,4 @@ STOPSIGNAL SIGWINCH
 
 EXPOSE 443
 
-ENTRYPOINT ["/httpd-foreground"]
+CMD ["apachectl", "-D", "FOREGROUND"]
