@@ -32,6 +32,7 @@ RUN set -eux; \
 		tar \
 		zlib-dev \
 		brotli-dev \
+        libpng-dev \
 	; \
     mkdir /usr/src; \
     cd /usr/src; \
