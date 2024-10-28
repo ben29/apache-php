@@ -5,7 +5,7 @@ ENV DEPEND="apr-dev apr-util-dev libc-dev pcre-dev nghttp2-dev make ca-certifica
 
 # SETTINGS
 ENV HTTPD_PREFIX=/usr/local/apache2
-ENV PATH=$HTTPD_PREFIX/bin:$PATH
+ENV PATH=$HTTPD_PREFIX/bin:/etc/php/bin:$PATH
 ENV HTTPD_VERSION=2.4.62
 ENV PHP_VERSION=8.3.13
 
