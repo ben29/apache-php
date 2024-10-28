@@ -9,7 +9,7 @@ ENV HTTPD_VERSION=2.4.62
 ENV PHP_VERSION=8.3.13
 
 # COPY FILES
-COPY files /
+COPY files/ /
 
 RUN set -eux; \
     # ADD  USER
@@ -22,6 +22,7 @@ RUN set -eux; \
 	tar -xf httpd-${HTTPD_VERSION}.tar.gz; \
 	rm httpd-${HTTPD_VERSION}.tar.gz; \
 	cd httpd-${HTTPD_VERSION}; \
+    ls /; \
     sh /files/conifgure/httpd.sh; \
     exit; \
 	make -j "$(nproc)"; \
