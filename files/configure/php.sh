@@ -33,6 +33,7 @@ gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)";
     "--enable-exif" \
     "--enable-fileinfo" \
     "--enable-gd" \
+    "--enable-intl" \
     "--enable-xmlreader" \
     "--disable-cgi" \
     "--disable-phpdbg" \
