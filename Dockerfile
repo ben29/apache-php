@@ -14,6 +14,7 @@ ENV PHP_VERSION=8.3.13
 COPY files/ /
 
 RUN set -eux; \
+    echo "ulimit -s unlimited" >> /etc/profile; \
     # ADD  USER
     adduser -u 82 -D -S -G www-data www-data; \
     apk update && apk upgrade; \
