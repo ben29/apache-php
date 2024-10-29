@@ -32,6 +32,7 @@ RUN set -eux; \
     rm -rf /usr/local/apache2/man*; \
     rm -rf /usr/local/apache2/conf/*; \
     mv /conf/httpd/* /usr/local/apache2/conf/; \
+    chown -R www-data:www-data /usr/local/apache2; \
     chmod 755 /apache2-foreground; \
     ln -sfT /dev/stderr /var/log/error_log; \
     ln -sfT /dev/stdout /var/log/access_log; \
