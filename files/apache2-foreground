@@ -4,4 +4,9 @@ set -e
 # Apache gets grumpy about PID files pre-existing
 rm -f /var/run/httpd.pid
 
+# Detect Symfony and change DocRoot
+if [ -d "/var/www/htdocs/public" ]; then
+  sed -i 's|/var/www/htdocs|/var/www/htdocs/public|g' /usr/local/apache2/conf/httpd-vhosts.conf;
+fi
+
 exec apachectl -D FOREGROUND "$@"
