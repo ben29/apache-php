@@ -1,6 +1,9 @@
 #!/bin/sh
 set -e
 
+# fix ulimit
+ulimit -s unlimited
+
 # Apache gets grumpy about PID files pre-existing
 rm -f /var/run/httpd.pid
 
