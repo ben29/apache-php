@@ -25,10 +25,9 @@ RUN set -eux; \
     sh /usr/local/src/configure/httpd.sh; \
     make -j "$(nproc)"; \
     make install; \
-    #mkdir -p /var/www/htdocs; \
-    #chown -R www-data:www-data /var/www/htdocs; \
-    mv /usr/local/src/conf/httpd/* /etc/httpd/conf/; \
-    chown -R www-data:www-data /usr/local/apache2; \
+    mkdir /etc/httpd; \
+    chown www-data:www-data /etc/httpd; \
+    mv /usr/local/src/conf/httpd/* /etc/httpd/; \
     chmod 755 /usr/local/src/apache2-foreground; \
     ln -sfT /dev/stderr /var/log/error_log; \
     ln -sfT /dev/stdout /var/log/access_log; \
