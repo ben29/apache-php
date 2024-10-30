@@ -14,8 +14,6 @@ ENV PHP_VERSION=8.3.13
 COPY files/ /usr/local/src
 
 RUN set -eux; \
-    # ADD  USER
-    adduser --system --uid 82 --ingroup www-data --no-create-home www-data; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
         $DEPEND \
