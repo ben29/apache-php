@@ -25,7 +25,7 @@ RUN set -eux; \
     mkdir -p /etc/httpd/conf; \
     mv /usr/local/src/conf/httpd/* /etc/httpd/conf; \
     chown -R www-data:www-data /etc/httpd; \
-    chown _R www-data:www /var/www; \
+    chown -R www-data:www /var/www; \
     ln -sfT /dev/stderr /var/log/error_log; \
     ln -sfT /dev/stdout /var/log/access_log; \
     openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/httpd/conf/server.key -out /etc/httpd/conf/server.crt -config /etc/httpd/conf/cert.txt; \
