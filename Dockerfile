@@ -21,11 +21,12 @@ RUN set -eux; \
     tar -xf httpd-${HTTPD_VERSION}.tar.gz; \
     rm httpd-${HTTPD_VERSION}.tar.gz; \
     cd httpd-${HTTPD_VERSION}; \
+    sed -i -e "s/install-conf install-htdocs/install-htdocs/g" Makefile.in; \
     sh /usr/local/src/configure/httpd.sh; \
     make -j "$(nproc)"; \
     make install; \
-    mkdir -p /var/www/htdocs; \
-    chown -R www-data:www-data /var/www/htdocs; \
+    #mkdir -p /var/www/htdocs; \
+    #chown -R www-data:www-data /var/www/htdocs; \
     mv /usr/local/src/conf/httpd/* /usr/local/apache2/conf/; \
     chown -R www-data:www-data /usr/local/apache2; \
     chmod 755 /usr/local/src/apache2-foreground; \
