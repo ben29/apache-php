@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 
-HTTPD_PREFIX=/usr/local/apache2
-
 ./configure \
-		--prefix="${HTTPD_PREFIX}" \
+		--prefix="/etc/httpd" \
     --bindir=/usr/bin \
     --sbindir=/usr/sbin \
     --sysconfdir=/etc/httpd/conf \

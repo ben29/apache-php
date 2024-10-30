@@ -6,9 +6,6 @@ FROM debian:12.7
 ENV HTTPD_VERSION=2.4.62
 ENV PHP_VERSION=8.3.13
 ENV DEPEND="libapr1-dev libaprutil1-dev gcc libpcre3-dev zlib1g-dev libssl-dev libnghttp2-dev make libxml2-dev libcurl4-openssl-dev libpng-dev g++ libonig-dev libsodium-dev libzip-dev wget"
-ENV HTTPD_PREFIX=/usr/local/apache2
-ENV PATH=$HTTPD_PREFIX/bin:/etc/php/bin:$PATH
-
 # Copy files
 COPY files/ /usr/local/src
 
@@ -25,13 +22,14 @@ RUN set -eux; \
     sh /usr/local/src/configure/httpd.sh; \
     make -j "$(nproc)"; \
     make install; \
-    mkdir /etc/httpd; \
-    chown www-data:www-data /etc/httpd; \
-    mv /usr/local/src/conf/httpd/* /etc/httpd/; \
+    mkdir -p /etc/httpd/conf; \
+    mv /usr/local/src/conf/httpd/* /etc/httpd/conf; \
+    chown -R www-data:www-data /etc/httpd; \
     chmod 755 /usr/local/src/apache2-foreground; \
     ln -sfT /dev/stderr /var/log/error_log; \
     ln -sfT /dev/stdout /var/log/access_log; \
-    openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ${HTTPD_PREFIX}/server.key -out ${HTTPD_PREFIX}/server.crt -config ${HTTPD_PREFIX}/conf/cert.txt; \
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/httpd/conf/server.key -out /etc/httpd/conf/server.crt -config /etc/httpd/conf/cert.txt; \
+    httpd -t; \
     # PHP \
     cd ..; \
     wget -q https://www.php.net/distributions/php-${PHP_VERSION}.tar.gz; \
