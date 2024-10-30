@@ -2,7 +2,7 @@
 # https://github.com/docker-library/php/blob/master/8.3/bookworm/apache/Dockerfile
 FROM debian:12.7
 
-ENV DEPEND="libapr1-dev libaprutil1-dev gcc libpcre3-dev zlib1g-dev libssl-dev libnghttp2-dev make libxml2-dev libcurl4-openssl-dev libpng-dev g++ libonig-dev libsodium-dev libzip-dev"
+ENV DEPEND="libapr1-dev libaprutil1-dev gcc libpcre3-dev zlib1g-dev libssl-dev libnghttp2-dev make libxml2-dev libcurl4-openssl-dev libpng-dev g++ libonig-dev libsodium-dev libzip-dev wget"
 
 # SETTINGS
 ENV HTTPD_PREFIX=/usr/local/apache2
@@ -53,6 +53,7 @@ RUN set -eux; \
     mv composer.phar /etc/php/bin; \
     rm -rf installer; \
     # CLEAN \
+    apt remove wget make g++ gcc -y; \
     rm -rf /usr/local/apache2/man*; \
     rm -rf /usr/local/apache2/conf/*; \
 	rm -rf /usr/local/src/*; \
