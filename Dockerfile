@@ -1,34 +1,30 @@
 # https://github.com/docker-library/httpd/blob/master/2.4/alpine/Dockerfile
 # https://github.com/docker-library/php/blob/master/8.3/bookworm/apache/Dockerfile
+
 FROM debian:12.7
 
-ENV DEPEND="libapr1-dev libaprutil1-dev gcc libpcre3-dev zlib1g-dev libssl-dev libnghttp2-dev make libxml2-dev libcurl4-openssl-dev libpng-dev g++ libonig-dev libsodium-dev libzip-dev wget"
-
-# SETTINGS
-ENV HTTPD_PREFIX=/usr/local/apache2
-ENV PATH=$HTTPD_PREFIX/bin:/etc/php/bin:$PATH
+# Set environment variables
 ENV HTTPD_VERSION=2.4.62
 ENV PHP_VERSION=8.3.13
+ENV DEPEND="libapr1-dev libaprutil1-dev gcc libpcre3-dev zlib1g-dev libssl-dev libnghttp2-dev make libxml2-dev libcurl4-openssl-dev libpng-dev g++ libonig-dev libsodium-dev libzip-dev wget"
+ENV HTTPD_PREFIX=/usr/local/apache2
+ENV PATH=$HTTPD_PREFIX/bin:/etc/php/bin:$PATH
 
-# COPY FILES
+# Copy files
 COPY files/ /usr/local/src
 
 RUN set -eux; \
-	apt-get update; \
-	apt-get install -y --no-install-recommends \
-        $DEPEND \
-		ca-certificates \
-		curl \
-	; \
-	rm -rf /var/lib/apt/lists/*; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends $DEPEND ca-certificates curl; \
+    rm -rf /var/lib/apt/lists/*; \
     cd /usr/local/src; \
     wget -q https://dlcdn.apache.org/httpd/httpd-${HTTPD_VERSION}.tar.gz; \
-	tar -xf httpd-${HTTPD_VERSION}.tar.gz; \
-	rm httpd-${HTTPD_VERSION}.tar.gz; \
-	cd httpd-${HTTPD_VERSION}; \
+    tar -xf httpd-${HTTPD_VERSION}.tar.gz; \
+    rm httpd-${HTTPD_VERSION}.tar.gz; \
+    cd httpd-${HTTPD_VERSION}; \
     sh /usr/local/src/configure/httpd.sh; \
-	make -j "$(nproc)"; \
-	make -j "$(nproc)" install; \
+    make -j "$(nproc)"; \
+    make install; \
     mkdir -p /var/www/htdocs; \
     chown -R www-data:www-data /var/www/htdocs; \
     mv /usr/local/src/conf/httpd/* /usr/local/apache2/conf/; \
@@ -43,21 +39,21 @@ RUN set -eux; \
     tar zxf php-${PHP_VERSION}.tar.gz; \
     cd php-${PHP_VERSION}; \
     sh /usr/local/src/configure/php.sh; \
-    make -j $(nproc); \
+    make -j "$(nproc)"; \
     find -type f -name '*.a' -delete; \
-    make -j install; \
+    make install; \
     cp /usr/local/src/conf/php/php.ini /etc/php/lib; \
     cd ../; \
     wget -q https://getcomposer.org/installer; \
     php -n installer; \
     mv composer.phar /etc/php/bin; \
     rm -rf installer; \
-    # CLEAN \
-    apt remove wget make g++ gcc -y; \
+    # Clean up unnecessary packages
+    apt-get purge -y --auto-remove $DEPEND; \
     rm -rf /usr/local/apache2/man*; \
     rm -rf /usr/local/apache2/conf/*; \
-	rm -rf /usr/local/src/*; \
-	httpd -v;
+    rm -rf /usr/local/src/*; \
+    httpd -v;
 
 STOPSIGNAL SIGWINCH
 
