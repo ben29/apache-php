@@ -4,6 +4,10 @@ HTTPD_PREFIX=/usr/local/apache2
 
 ./configure \
 		--prefix="${HTTPD_PREFIX}" \
+    --bindir=/usr/bin \
+    --sbindir=/usr/sbin \
+    --sysconfdir=/etc/httpd/conf \
+    --datadir=/var/www \
     --with-mpm=event \
     --enable-deflate \
     --enable-unique-id \

@@ -1,6 +1,5 @@
 # https://github.com/docker-library/httpd/blob/master/2.4/alpine/Dockerfile
 # https://github.com/docker-library/php/blob/master/8.3/bookworm/apache/Dockerfile
-
 FROM debian:12.7
 
 # Set environment variables
@@ -50,8 +49,8 @@ RUN set -eux; \
     rm -rf installer; \
     # Clean up unnecessary packages
     apt-get purge -y --auto-remove $DEPEND; \
+    apt autoremove -y; \
     rm -rf /usr/local/apache2/man*; \
-    rm -rf /usr/local/apache2/conf/*; \
     rm -rf /usr/local/src/*; \
     httpd -v;
 
