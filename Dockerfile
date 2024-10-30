@@ -25,7 +25,6 @@ RUN set -eux; \
     mkdir -p /etc/httpd/conf; \
     mv /usr/local/src/conf/httpd/* /etc/httpd/conf; \
     chown -R www-data:www-data /etc/httpd; \
-    chmod 755 /usr/local/src/apache2-foreground; \
     ln -sfT /dev/stderr /var/log/error_log; \
     ln -sfT /dev/stdout /var/log/access_log; \
     openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/httpd/conf/server.key -out /etc/httpd/conf/server.crt -config /etc/httpd/conf/cert.txt; \
@@ -43,8 +42,9 @@ RUN set -eux; \
     cd ../; \
     wget -q https://getcomposer.org/installer; \
     php -n installer; \
-    mv composer.phar /etc/php/bin; \
-    rm -rf installer; \
+    mv composer.phar /usr/bin/; \
+    mv /usr/local/src/apache2-foreground /apache2-foreground; \
+    chmod 755 /apache2-foreground; \
     # Clean up unnecessary packages \
     apt-get purge -y --auto-remove gcc make g++ wget; \
     apt autoremove -y; \
