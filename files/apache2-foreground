@@ -1,15 +1,26 @@
 #!/bin/sh
 set -e
 
-# fix ulimit
+# Fix ulimit
 ulimit -s unlimited
 
-# Apache gets grumpy about PID files pre-existing
-rm -f /var/run/httpd.pid
+# Backup the original Apache virtual hosts configuration
+cp /etc/httpd/conf/httpd-vhosts.conf /etc/httpd/conf/httpd-vhosts.conf.bak
 
-# Detect Symfony and change DocRoot
-if [ -d "/var/www/htdocs/public" ]; then
-  sed -i 's|/var/www/htdocs|/var/www/htdocs/public|g' /etc/httpd/conf/httpd-vhosts.conf;
+# Replace Domain
+if [ -n "${SITE_URL}" ]; then
+  sed -i "s|/localhost|${SITE_URL}|g" /etc/httpd/conf/httpd-vhosts.conf
 fi
 
+# Detect Symfony and change DocRoot
+if [ -n "${APP_SECRET}" ]; then
+  sed -i "s|/var/www/htdocs|/var/www/htdocs/public|g" /etc/httpd/conf/httpd-vhosts.conf
+fi
+
+# Apache gets grumpy about PID files pre-existing
+if [ -f /var/run/httpd.pid ]; then
+  rm -f /var/run/httpd.pid
+fi
+
+# Start Apache in the foreground
 exec apachectl -D FOREGROUND "$@"
