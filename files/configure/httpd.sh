@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 
-#gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)";
 HTTPD_PREFIX=/usr/local/apache2
 
 ./configure \
-		--build="${gnuArch}" \
 		--prefix="${HTTPD_PREFIX}" \
     --with-mpm=event \
     --enable-deflate \
