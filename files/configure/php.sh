@@ -13,6 +13,9 @@ export \
 ./configure \
     "--build=${gnuArch}" \
     "--prefix=/etc/php" \
+    "--sysconfdir=/etc/php/conf" \
+    "--bindir=/usr/bin" \
+    "--sbindir=/usr/sbin" \
     "--with-apxs2" \
     "--with-mysql-sock=/var/lib/mysql/mysql.sock" \
     "--with-mysqli=mysqlnd" \
