@@ -15,7 +15,7 @@ COPY files/ /usr/local/src
 
 RUN set -eux; \
     # ADD  USER
-    adduser -u 82 -D -S -G www-data www-data; \
+    adduser --system --uid 82 --ingroup www-data --no-create-home www-data; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
         $DEPEND \
