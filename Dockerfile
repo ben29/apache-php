@@ -46,7 +46,7 @@ RUN set -eux; \
     mv composer.phar /etc/php/bin; \
     rm -rf installer; \
     # Clean up unnecessary packages \
-    apt-get purge -y --auto-remove cc make g++ wget; \
+    apt-get purge -y --auto-remove gcc make g++ wget; \
     apt autoremove -y; \
     rm -rf /usr/local/src/*; \
     httpd -v;
