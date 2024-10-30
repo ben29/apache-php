@@ -9,7 +9,7 @@ rm -f /var/run/httpd.pid
 
 # Detect Symfony and change DocRoot
 if [ -d "/var/www/htdocs/public" ]; then
-  sed -i 's|/var/www/htdocs|/var/www/htdocs/public|g' /usr/local/apache2/conf/httpd-vhosts.conf;
+  sed -i 's|/var/www/htdocs|/var/www/htdocs/public|g' /etc/httpd/conf/httpd-vhosts.conf;
 fi
 
 exec apachectl -D FOREGROUND "$@"
