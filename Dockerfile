@@ -27,7 +27,7 @@ RUN set -eux; \
     make install; \
     #mkdir -p /var/www/htdocs; \
     #chown -R www-data:www-data /var/www/htdocs; \
-    mv /usr/local/src/conf/httpd/* /usr/local/apache2/conf/; \
+    mv /usr/local/src/conf/httpd/* /etc/httpd/conf/; \
     chown -R www-data:www-data /usr/local/apache2; \
     chmod 755 /usr/local/src/apache2-foreground; \
     ln -sfT /dev/stderr /var/log/error_log; \
@@ -51,7 +51,6 @@ RUN set -eux; \
     # Clean up unnecessary packages
     apt-get purge -y --auto-remove $DEPEND; \
     apt autoremove -y; \
-    rm -rf /usr/local/apache2/man*; \
     rm -rf /usr/local/src/*; \
     httpd -v;
 

@@ -8,6 +8,7 @@ HTTPD_PREFIX=/usr/local/apache2
     --sbindir=/usr/sbin \
     --sysconfdir=/etc/httpd/conf \
     --datadir=/var/www \
+    --mandir=/var/www \
     --with-mpm=event \
     --enable-deflate \
     --enable-unique-id \
