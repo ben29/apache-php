@@ -13,7 +13,7 @@ export \
 ./configure \
     "--build=${gnuArch}" \
     "--prefix=/etc/php" \
-    "--with-apxs2=/usr/local/apache2/bin/apxs" \
+    "--with-apxs2" \
     "--with-mysql-sock=/var/lib/mysql/mysql.sock" \
     "--with-mysqli=mysqlnd" \
     "--with-pdo-mysql=mysqlnd" \

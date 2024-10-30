@@ -5,7 +5,7 @@ FROM debian:12.7
 # Set environment variables
 ENV HTTPD_VERSION=2.4.62
 ENV PHP_VERSION=8.3.13
-ENV DEPEND="libapr1-dev libaprutil1-dev gcc libpcre3-dev zlib1g-dev libssl-dev libnghttp2-dev make libxml2-dev libcurl4-openssl-dev libpng-dev g++ libonig-dev libsodium-dev libzip-dev wget perl"
+ENV DEPEND="libapr1-dev libaprutil1-dev gcc libpcre3-dev zlib1g-dev libssl-dev libnghttp2-dev make libxml2-dev libcurl4-openssl-dev libpng-dev g++ libonig-dev libsodium-dev libzip-dev wget"
 # Copy files
 COPY files/ /usr/local/src
 
