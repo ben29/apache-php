@@ -1,6 +1,6 @@
 # https://github.com/docker-library/httpd/blob/master/2.4/alpine/Dockerfile
 # https://github.com/docker-library/php/blob/master/8.3/bookworm/apache/Dockerfile
-FROM debian:12.7
+FROM debian:12.8
 
 # Set environment variables
 ENV HTTPD_VERSION=2.4.62
