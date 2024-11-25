@@ -12,10 +12,11 @@ export \
 
 ./configure \
     "--build=${gnuArch}" \
-    "--prefix=/etc/php" \
+    "--prefix=/etc" \
     "--sysconfdir=/etc/php/conf" \
     "--bindir=/usr/bin" \
     "--sbindir=/usr/sbin" \
+    "--with-config-file-scan-dir=/etc/php" \
     "--with-apxs2" \
     "--with-mysql-sock=/var/lib/mysql/mysql.sock" \
     "--with-mysqli=mysqlnd" \
