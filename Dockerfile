@@ -71,4 +71,4 @@ WORKDIR /var/www/htdocs
 EXPOSE 80 443
 
 # Set the default command to run the Apache server
-CMD ["/apache2-foreground"]
+ENTRYPOINT ["/apache2-foreground"]
