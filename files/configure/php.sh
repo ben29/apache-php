@@ -12,7 +12,7 @@ export \
 
 ./configure \
     "--build=${gnuArch}" \
-    "--prefix=/etc" \
+    "--prefix=/etc/php" \
     "--sysconfdir=/etc/php/conf" \
     "--bindir=/usr/bin" \
     "--sbindir=/usr/sbin" \
