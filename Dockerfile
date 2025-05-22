@@ -1,5 +1,5 @@
 # Use the Debian 12.8 as the base image
-FROM debian:12.10
+FROM debian:12.11
 
 # Set environment variables
 ARG HTTPD_VERSION=2.4.62
