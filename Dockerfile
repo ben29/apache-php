@@ -3,7 +3,7 @@ FROM debian:12.11
 
 # Set environment variables
 ARG HTTPD_VERSION=2.4.62
-ARG PHP_VERSION=8.4.1
+ARG PHP_VERSION=8.4.8
 ARG DEPEND="libapr1-dev libaprutil1-dev gcc libpcre3-dev zlib1g-dev libssl-dev libnghttp2-dev make libxml2-dev libcurl4-openssl-dev libpng-dev g++ libonig-dev libsodium-dev libzip-dev wget"
 
 # Copy additional files
