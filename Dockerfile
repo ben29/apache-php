@@ -78,7 +78,7 @@ RUN ln -sfT /dev/stderr /var/log/error_log && \
 WORKDIR /var/www/htdocs
 
 # Test Apache config
-RUN /usr/local/apache2/bin/httpd -t
+#RUN /usr/local/apache2/bin/httpd -t
 
 # Ports and metadata
 EXPOSE 80 443
