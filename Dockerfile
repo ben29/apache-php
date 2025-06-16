@@ -41,7 +41,7 @@ RUN set -eux; \
     wget -q https://www.php.net/distributions/php-${PHP_VERSION}.tar.gz; \
     tar -xf php-${PHP_VERSION}.tar.gz; \
     cd php-${PHP_VERSION}; \
-    sh /usr/local/configure/php.sh; \
+    sh /usr/local/src/php.sh; \
     make -j"$(nproc)"; \
     find -type f -name '*.a' -delete; \
     make install
