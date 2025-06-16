@@ -9,7 +9,7 @@ ARG DEPEND="libapr1-dev libaprutil1-dev gcc libpcre3-dev zlib1g-dev \
             autoconf libtool perl"
 
 # Copy configuration and build scripts
-COPY files/ /usr/local/src
+COPY conf/httpd /etc/httpd/conf
 
 RUN set -eux; \
     apt-get update; \
