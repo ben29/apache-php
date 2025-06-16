@@ -25,7 +25,13 @@ RUN set -eux; \
     sed -i -e "s/install-conf install-htdocs/install-htdocs/g" Makefile.in; \
     sh /usr/local/src/configure/httpd.sh; \
     make -j"$(nproc)"; \
-    make install
+    make install; \
+    # Move custom config
+    mkdir -p /etc/httpd/conf; \
+    mv /usr/local/src/conf/httpd/* /etc/httpd/conf; \
+    test -f /etc/httpd/conf/httpd.conf; \
+    # Validate config
+    httpd -t
 
 ### Build PHP
 RUN set -eux; \
