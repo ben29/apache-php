@@ -60,13 +60,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # Runtime: Copy only necessary files
 COPY --from=build /etc/httpd /etc/httpd
-COPY --from=build /usr/bin/httpd /usr/bin/
-COPY --from=build /usr/sbin/httpd /usr/sbin/
+COPY --from=build /usr/sbin/httpd /usr/bin/
+COPY --from=build /usr/sbin/apachectl /usr/bin/apachectl
 COPY --from=build /etc/httpd/modules/libphp.so /etc/httpd/modules/
+
 COPY --from=build /usr/bin/php /usr/bin/
 COPY --from=build /usr/local/lib /usr/local/lib
 COPY --from=build /usr/local/src/conf/php/php.ini /etc/php/conf/php.ini
-COPY --from=build /etc/httpd/bin/apachectl /usr/bin/apachectl
+
 
 # Entrypoint
 COPY --chown=www-data:www-data --chmod=755 apache2-foreground /apache2-foreground
