@@ -65,7 +65,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 #COPY --from=build /usr/local/bin /usr/local/bin
 #COPY --from=build /usr/local/lib /usr/local/lib
 #COPY --from=build /usr/bin/composer /usr/bin/composer
-COPY --from=build /apache2-foreground /apache2-foreground
+COPY apache2-foreground /apache2-foreground
 #COPY --from=build /usr/local/src/conf/php/php.ini /etc/php/lib/php.ini
 
 # Log redirection
