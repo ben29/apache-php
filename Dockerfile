@@ -29,12 +29,11 @@ RUN set -eux; \
     # Move custom config
     mkdir -p /etc/httpd/conf; \
     mv /usr/local/src/conf/httpd/* /etc/httpd/conf; \
-    test -f /etc/httpd/conf/httpd.conf; \
     # Setup SSL certificates
     openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-    -keyout /etc/httpd/conf/server.key \
-    -out /etc/httpd/conf/server.crt \
-    -config /etc/httpd/conf/cert.txt; \
+      -keyout /etc/httpd/conf/server.key \
+      -out /etc/httpd/conf/server.crt \
+      -config /etc/httpd/conf/cert.txt; \
     # Validate config
     httpd -t
 
@@ -63,13 +62,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates curl && rm -rf /var/lib/apt/lists/*
 
 # Copy binaries and configs from builder
-COPY --from=build /usr/local/apache2 /usr/local/apache2
-COPY --from=build /etc/httpd/conf /etc/httpd/conf
-COPY --from=build /usr/local/bin /usr/local/bin
-COPY --from=build /usr/local/lib /usr/local/lib
-COPY --from=build /usr/bin/composer /usr/bin/composer
-COPY --from=build /apache2-foreground /apache2-foreground
-COPY --from=build /usr/local/src/conf/php/php.ini /etc/php/lib/php.ini
+#COPY --from=build /usr/local/apache2 /usr/local/apache2
+#COPY --from=build /etc/httpd/conf /etc/httpd/conf
+#COPY --from=build /usr/local/bin /usr/local/bin
+#COPY --from=build /usr/local/lib /usr/local/lib
+#COPY --from=build /usr/bin/composer /usr/bin/composer
+#COPY --from=build /apache2-foreground /apache2-foreground
+#COPY --from=build /usr/local/src/conf/php/php.ini /etc/php/lib/php.ini
 
 # Log redirection
 RUN ln -sfT /dev/stderr /var/log/error_log && \
