@@ -58,20 +58,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxml2 libcurl4 libpng16-16 libonig5 libsodium23 libzip4 \
     ca-certificates curl && rm -rf /var/lib/apt/lists/*
 
-# Copy Apache install from build
+# Runtime: Copy only necessary files
 COPY --from=build /etc/httpd /etc/httpd
 COPY --from=build /usr/bin/httpd /usr/bin/
-COPY --from=build /usr/sbin/httpd /usr/sbin/  # In case it was installed here
-COPY --from=build /usr/libexec /usr/libexec   # Apache modules
-
-# Copy PHP binary and related files
-COPY --from=build /usr/local/bin/php /usr/local/bin/
+COPY --from=build /usr/sbin/httpd /usr/sbin/
+COPY --from=build /etc/httpd/modules/libphp.so /etc/httpd/modules/
+COPY --from=build /usr/bin/php /usr/bin/
 COPY --from=build /usr/local/lib /usr/local/lib
+COPY --from=build /usr/local/src/conf/php/php.ini /etc/php/conf/php.ini
+COPY --from=build /usr/bin/apachectl /usr/bin/
 
-# Optional: copy php.ini if you're using one
-COPY --from=build /usr/local/src/conf/php/php.ini /etc/php/php.ini
-
-# Copy apache2-foreground script
+# Entrypoint
 COPY --chown=www-data:www-data --chmod=755 apache2-foreground /apache2-foreground
 
 # Log redirection

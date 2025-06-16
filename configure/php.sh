@@ -17,6 +17,7 @@ export \
     "--bindir=/usr/bin" \
     "--sbindir=/usr/sbin" \
     "--with-config-file-scan-dir=/etc/php" \
+    "--disable-all" \
     "--with-apxs2" \
     "--with-mysql-sock=/var/lib/mysql/mysql.sock" \
     "--with-mysqli=mysqlnd" \
@@ -49,5 +50,4 @@ export \
     "--enable-xmlreader" \
     "--disable-cgi" \
     "--disable-phpdbg" \
-    "--disable-ipv6" \
-    "--disable-all"
+    "--disable-ipv6"
