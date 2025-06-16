@@ -60,7 +60,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates curl && rm -rf /var/lib/apt/lists/*
 
 # Copy binaries and configs from builder
-#COPY --from=build /usr/local/apache2 /usr/local/apache2
+COPY --from=build /etc/httpd /etc/httpd
+COPY --from=build /usr/bin/apachectl /usr/bin
+#COPY --from=build /usr/local/lib /usr/local/lib
 #COPY --from=build /etc/httpd/conf /etc/httpd/conf
 #COPY --from=build /usr/local/bin /usr/local/bin
 #COPY --from=build /usr/local/lib /usr/local/lib
