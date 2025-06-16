@@ -10,7 +10,7 @@ ARG DEPEND="libapr1-dev libaprutil1-dev gcc libpcre3-dev zlib1g-dev \
 
 # Copy configuration and build scripts
 COPY conf/httpd /etc/httpd/conf
-COPY configure/httpd.sh /usr/local/src
+COPY configure/ /usr/local/src
 
 RUN set -eux; \
     apt-get update; \
@@ -27,9 +27,6 @@ RUN set -eux; \
     sh /usr/local/src/httpd.sh; \
     make -j"$(nproc)"; \
     make install; \
-    # Move custom config
-    #mkdir -p /etc/httpd/conf; \
-    #mv /usr/local/src/conf/httpd/* /etc/httpd/conf; \
     # Setup SSL certificates
     openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
       -keyout /etc/httpd/conf/server.key \
@@ -44,7 +41,7 @@ RUN set -eux; \
     wget -q https://www.php.net/distributions/php-${PHP_VERSION}.tar.gz; \
     tar -xf php-${PHP_VERSION}.tar.gz; \
     cd php-${PHP_VERSION}; \
-    sh /usr/local/src/configure/php.sh; \
+    sh /usr/local/configure/php.sh; \
     make -j"$(nproc)"; \
     find -type f -name '*.a' -delete; \
     make install
