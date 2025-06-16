@@ -52,9 +52,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates curl && rm -rf /var/lib/apt/lists/*
 
 # Create user and folders
-RUN useradd -r -d /var/www -s /sbin/nologin www-data && \
-    mkdir -p /etc/httpd/conf /var/www/htdocs /var/log && \
-    chown -R www-data:www-data /var/www /etc/httpd /var/log
+#RUN useradd -r -d /var/www -s /sbin/nologin www-data && \
+#    mkdir -p /etc/httpd/conf /var/www/htdocs /var/log && \
+#    chown -R www-data:www-data /var/www /etc/httpd /var/log
 
 # Copy binaries and configs from builder
 COPY --from=build /usr/local/apache2 /usr/local/apache2
