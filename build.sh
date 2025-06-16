@@ -1,8 +1,9 @@
-#!/usr/bin/env bash
-git pull
-docker rmi -f $(docker images -q)
-docker build -t php-apache:1.0 .
-docker tag php-apache:1.0 benhakim2010/php-apache:1.0
-docker tag php-apache:1.0 benhakim2010/php-apache:latest
-docker push benhakim2010/php-apache:1.0
+#!/bin/sh
+set -e
+
+APP_VERSION="1.0"
+TAG="benhakim2010/php-apache:${APP_VERSION}"
+
+docker build --progress=plain --no-cache --build-arg APP_VERSION=${APP_VERSION} -t "${TAG}" .
+docker push "${TAG}"
 docker push benhakim2010/php-apache:latest
