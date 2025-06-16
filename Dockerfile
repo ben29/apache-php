@@ -49,26 +49,30 @@ RUN set -eux; \
 ### Install Composer
 RUN set -eux; \
     curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
-
 # ---- Stage 2: Runtime Image ----
 FROM debian:12.11
 
-# Add runtime dependencies only
+# Install runtime dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libapr1 libaprutil1 libpcre3 zlib1g libssl3 libnghttp2-14 \
     libxml2 libcurl4 libpng16-16 libonig5 libsodium23 libzip4 \
     ca-certificates curl && rm -rf /var/lib/apt/lists/*
 
-# Copy binaries and configs from builder
+# Copy Apache install from build
 COPY --from=build /etc/httpd /etc/httpd
-COPY --from=build /usr/bin/apachectl /usr/bin
-#COPY --from=build /usr/local/lib /usr/local/lib
-#COPY --from=build /etc/httpd/conf /etc/httpd/conf
-#COPY --from=build /usr/local/bin /usr/local/bin
-#COPY --from=build /usr/local/lib /usr/local/lib
-#COPY --from=build /usr/bin/composer /usr/bin/composer
+COPY --from=build /usr/bin/httpd /usr/bin/
+COPY --from=build /usr/sbin/httpd /usr/sbin/  # In case it was installed here
+COPY --from=build /usr/libexec /usr/libexec   # Apache modules
+
+# Copy PHP binary and related files
+COPY --from=build /usr/local/bin/php /usr/local/bin/
+COPY --from=build /usr/local/lib /usr/local/lib
+
+# Optional: copy php.ini if you're using one
+COPY --from=build /usr/local/src/conf/php/php.ini /etc/php/php.ini
+
+# Copy apache2-foreground script
 COPY --chown=www-data:www-data --chmod=755 apache2-foreground /apache2-foreground
-#COPY --from=build /usr/local/src/conf/php/php.ini /etc/php/lib/php.ini
 
 # Log redirection
 RUN ln -sfT /dev/stderr /var/log/error_log && \
@@ -77,20 +81,16 @@ RUN ln -sfT /dev/stderr /var/log/error_log && \
 # Set working directory
 WORKDIR /var/www/htdocs
 
-# Test Apache config
-#RUN /usr/local/apache2/bin/httpd -t
-
-# Ports and metadata
+# Expose ports
 EXPOSE 80 443
 STOPSIGNAL SIGWINCH
 
-# Optional healthcheck
+# Healthcheck
 HEALTHCHECK --interval=30s --timeout=5s \
     CMD curl -f http://localhost/ || exit 1
 
-# Drop privileges (optional)
+# Run as non-root
 USER www-data
 
-# Start script
+# Entrypoint script
 ENTRYPOINT ["/apache2-foreground"]
-CMD []
