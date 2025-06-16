@@ -10,6 +10,7 @@ ARG DEPEND="libapr1-dev libaprutil1-dev gcc libpcre3-dev zlib1g-dev \
 
 # Copy configuration and build scripts
 COPY conf/httpd /etc/httpd/conf
+COPY configure/httpd.sh /usr/local/src
 
 RUN set -eux; \
     apt-get update; \
@@ -23,12 +24,12 @@ RUN set -eux; \
     tar -xf httpd-${HTTPD_VERSION}.tar.gz; \
     cd httpd-${HTTPD_VERSION}; \
     sed -i -e "s/install-conf install-htdocs/install-htdocs/g" Makefile.in; \
-    sh /usr/local/src/configure/httpd.sh; \
+    sh /usr/local/src/httpd.sh; \
     make -j"$(nproc)"; \
     make install; \
     # Move custom config
-    mkdir -p /etc/httpd/conf; \
-    mv /usr/local/src/conf/httpd/* /etc/httpd/conf; \
+    #mkdir -p /etc/httpd/conf; \
+    #mv /usr/local/src/conf/httpd/* /etc/httpd/conf; \
     # Setup SSL certificates
     openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
       -keyout /etc/httpd/conf/server.key \
