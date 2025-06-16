@@ -34,7 +34,7 @@ RUN set -eux; \
     openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
     -keyout /etc/httpd/conf/server.key \
     -out /etc/httpd/conf/server.crt \
-    -config /etc/httpd/conf/cert.txt \
+    -config /etc/httpd/conf/cert.txt; \
     # Validate config
     httpd -t
 
