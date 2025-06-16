@@ -30,6 +30,11 @@ RUN set -eux; \
     mkdir -p /etc/httpd/conf; \
     mv /usr/local/src/conf/httpd/* /etc/httpd/conf; \
     test -f /etc/httpd/conf/httpd.conf; \
+    # Setup SSL certificates
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+    -keyout /etc/httpd/conf/server.key \
+    -out /etc/httpd/conf/server.crt \
+    -config /etc/httpd/conf/cert.txt \
     # Validate config
     httpd -t
 
@@ -70,13 +75,6 @@ COPY --from=build /usr/local/lib /usr/local/lib
 COPY --from=build /usr/bin/composer /usr/bin/composer
 COPY --from=build /apache2-foreground /apache2-foreground
 COPY --from=build /usr/local/src/conf/php/php.ini /etc/php/lib/php.ini
-
-# Setup SSL certificates
-RUN set -eux; \
-    openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-    -keyout /etc/httpd/conf/server.key \
-    -out /etc/httpd/conf/server.crt \
-    -config /etc/httpd/conf/cert.txt
 
 # Log redirection
 RUN ln -sfT /dev/stderr /var/log/error_log && \
