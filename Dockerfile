@@ -1,5 +1,5 @@
 # ---- Build Apache, PHP, and Composer in a single layer ----
-FROM debian:12.11-slim AS build
+FROM debian:12.11-slim
 
 ARG HTTPD_VERSION=2.4.63
 ARG PHP_VERSION=8.4.8
@@ -19,14 +19,12 @@ RUN set -eux; \
     cd /usr/local/src; \
     wget -q https://dlcdn.apache.org/httpd/httpd-${HTTPD_VERSION}.tar.gz; \
     tar -xf httpd-${HTTPD_VERSION}.tar.gz; \
-    rm httpd-${HTTPD_VERSION}.tar.gz; \
     cd httpd-${HTTPD_VERSION}; \
     sh /usr/local/src/httpd.sh; \
     make -j "$(nproc)"; \
     make install; \
     # # Prepare logs and htdocs directory
-    mkdir -p /var/www/htdocs && \
-    chown -R www-data:www-data /var/www/htdocs && \
+    chown -R www-data:www-data /var/www && \
     ln -sfT /dev/stderr /var/log/error_log && \
     ln -sfT /dev/stdout /var/log/access_log; \
     # Build PHP (mod_php)
@@ -39,14 +37,14 @@ RUN set -eux; \
     find -type f -name '*.a' -delete; \
     make install; \
     # Install Composer
-    #cd /usr/local/src; \
-    #wget -q https://getcomposer.org/installer; \
-    #php -n installer; \
-    #mv composer.phar /usr/bin/; \
+    cd /usr/local/src; \
+    wget -q https://getcomposer.org/installer; \
+    php -n installer; \
+    mv composer.phar /usr/bin/; \
     # Clean up build dependencies and unnecessary files
     apt-get purge -y --auto-remove gcc make g++ wget; \
     apt autoremove -y; \
-    rm -rf /var/www/man* /usr/local/src/* /var/lib/apt/lists/*;
+    rm -rf installer /var/www/man* /usr/local/src/* /var/lib/apt/lists/*;
 
 # Copy configurations and binaries
 COPY --chown=www-data:www-data conf/httpd /etc/httpd/conf
