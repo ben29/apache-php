@@ -35,6 +35,7 @@ RUN set -eux; \
     make -j"$(nproc)"; \
     find -type f -name '*.a' -delete; \
     make install; \
+     strip /usr/local/bin/php; \
     curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer; \
     find /usr/local/bin -type f ! \( -name apachectl -o -name php -o -name httpd \) -delete;
 
