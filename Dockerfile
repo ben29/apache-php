@@ -50,18 +50,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY --chown=www-data:www-data conf/httpd /etc/httpd/conf
 COPY --chown=www-data:www-data --from=build /usr/local/bin /usr/local/bin
 COPY conf/php/php.ini /etc/php.ini
-
-# Entrypoint
 COPY --chown=www-data:www-data --chmod=755 apache2-foreground /apache2-foreground
 
-# Prepare logs and HTML dir
-RUN ln -sfT /dev/stderr /var/log/error_log && \
-    ln -sfT /dev/stdout /var/log/access_log && \
-    mkdir -p /var/www/html && \
-    chown -R www-data:www-data /var/www/html
+# Prepare logs and htdocs directory
+RUN mkdir -p /var/www/htdocs && \
+    chown -R www-data:www-data /var/www/htdocs && \
+    ln -sfT /dev/stderr /var/log/error_log && \
+    ln -sfT /dev/stdout /var/log/access_log
 
 # Set working directory
-WORKDIR /var/www/html
+WORKDIR /var/www/htdocs
 
 # Expose ports
 EXPOSE 80 443
