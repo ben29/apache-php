@@ -23,8 +23,6 @@ RUN set -eux; \
     sh /usr/local/src/httpd.sh; \
     make -j"$(nproc)"; \
     make install;
-    # Validate config
-    #httpd -t
 
 ### Build PHP
 RUN set -eux; \
