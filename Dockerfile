@@ -40,7 +40,7 @@ RUN set -eux; \
     find -type f -name '*.a' -delete; \
     make install; \
     strip --strip-unneeded /usr/local/bin/php || true; \
-    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer; \
+    wget -q -O - https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer; \
     find /usr/local/bin -type f ! \( -name apachectl -o -name php -o -name httpd \) -delete; \
     # Clean up unnecessary build dependencies
     apt-get purge -y g++ wget && apt-get autoremove -y && apt-get clean
