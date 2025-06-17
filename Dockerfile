@@ -7,14 +7,17 @@ ARG PHP_VERSION=8.4.8
 # Copy build scripts
 COPY configure/ /usr/local/src
 
-### Build Apache HTTP Server
-RUN set -eux; \
-    apt-get update && \
+# Install build dependencies
+RUN apt-get update && \
     apt-get install -y --no-install-recommends \
       wget ca-certificates \
       libpcre3-dev libapr1-dev libaprutil1-dev gcc libssl-dev \
       libnghttp2-dev make libxml2-dev zlib1g-dev libcurl4-openssl-dev \
       libpng-dev g++ libonig-dev libsodium-dev libzip-dev && \
+    rm -rf /var/lib/apt/lists/*
+
+### Build Apache HTTP Server
+RUN set -eux; \
     cd /usr/local/src; \
     wget -q https://dlcdn.apache.org/httpd/httpd-${HTTPD_VERSION}.tar.gz; \
     tar -xf httpd-${HTTPD_VERSION}.tar.gz; \
@@ -38,11 +41,9 @@ RUN set -eux; \
     strip --strip-unneeded /usr/local/bin/php || true; \
     # Install Composer via wget (ignore SSL certificates)
     wget -q -O - https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer; \
-    # Remove unnecessary files
-    find /usr/local/bin -type f ! \( -name apachectl -o -name php -o -name httpd \) -delete; \
     # Clean up unnecessary build dependencies
     apt-get purge -y g++ wget && apt-get autoremove -y && apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* /usr/local/src/* /tmp/* /var/tmp/*
 
 # ---- Stage 2: Runtime Image ----
 FROM debian:12.11-slim
@@ -51,7 +52,7 @@ FROM debian:12.11-slim
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates libssl-dev libnghttp2-dev libpcre3-dev \
     libaprutil1-dev libxml2-dev libcurl4-openssl-dev \
-    libonig-dev libsodium-dev libzip-dev; \
+    libonig-dev libsodium-dev libzip-dev libldap-2.4-2 && \
     rm -rf /var/lib/apt/lists/*
 
 # Copy configurations
@@ -59,7 +60,7 @@ COPY --chown=www-data:www-data conf/httpd /etc/httpd/conf
 COPY --chown=www-data:www-data --from=build /etc/httpd/modules /etc/httpd/modules
 COPY conf/php/php.ini /etc/php.ini
 
-# Copy binaries
+# Copy binaries (httpd, apachectl, php, composer)
 COPY --from=build /usr/local/bin/httpd /usr/local/bin/
 COPY --from=build /usr/local/bin/apachectl /usr/local/bin/
 COPY --from=build /usr/local/bin/php /usr/local/bin/
