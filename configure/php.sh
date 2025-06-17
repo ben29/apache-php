@@ -15,6 +15,7 @@ export \
     "--prefix=/etc/php" \
     "--bindir=/usr/local/bin" \
     "--sbindir=/usr/local/bin" \
+    "--with-config-file-scan-dir=/etc" \
     "--disable-all" \
     "--with-apxs2" \
     "--with-mysql-sock=/var/lib/mysql/mysql.sock" \

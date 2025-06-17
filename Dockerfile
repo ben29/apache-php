@@ -51,7 +51,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Runtime: Copy only necessary files
 COPY --chown=www-data:www-data conf/httpd /etc/httpd
 COPY --chown=www-data:www-data --from=build /usr/local/bin /usr/local/bin
-#COPY --from=build /usr/local/src/conf/php/php.ini /etc/php/conf/php.ini
+COPY conf/php/php.ini /etc/php.ini
 
 # Entrypoint
 COPY --chown=www-data:www-data --chmod=755 apache2-foreground /apache2-foreground

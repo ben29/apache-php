@@ -2,7 +2,7 @@
 
 ./configure \
 		--prefix=/etc/httpd \
-		--sysconfdir=/etc/httpd/conf \
+		--sysconfdir=/etc/httpd \
     --bindir=/usr/local/bin \
     --sbindir=/usr/local/bin \
     --datadir=/var/www \
