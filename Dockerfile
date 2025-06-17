@@ -43,7 +43,6 @@ RUN set -eux; \
     #wget -q https://getcomposer.org/installer; \
     #php -n installer; \
     #mv composer.phar /usr/bin/; \
-    # Prepare the entrypoint script
     # Clean up build dependencies and unnecessary files
     apt-get purge -y --auto-remove gcc make g++ wget; \
     apt autoremove -y; \
