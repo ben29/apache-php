@@ -54,9 +54,9 @@ COPY conf/php/php.ini /etc/php.ini
 # Entrypoint
 COPY --chown=www-data:www-data --chmod=755 apache2-foreground /apache2-foreground
 
-# Log redirection
-#RUN ln -sfT /dev/stderr /var/log/error_log && \
-#    ln -sfT /dev/stdout /var/log/access_log
+# Create Apache log redirection to stdout/stderr
+RUN ln -sfT /dev/stderr /var/log/error_log && \
+    ln -sfT /dev/stdout /var/log/access_log
 
 # Set working directory
 WORKDIR /var/www/htdocs
