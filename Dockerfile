@@ -12,7 +12,7 @@ RUN set -eux; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
       wget \
-      libapr1-dev libaprutil1-dev gcc libssl-dev libnghttp2-dev make; \
+      libpcre3-dev libapr1-dev libaprutil1-dev gcc libssl-dev libnghttp2-dev make; \
     rm -rf /var/lib/apt/lists/*; \
     cd /usr/local/src; \
     wget -q https://dlcdn.apache.org/httpd/httpd-${HTTPD_VERSION}.tar.gz; \
@@ -28,9 +28,10 @@ RUN set -eux; \
 
 ### Build PHP (mod_php)
 RUN set -eux; \
-    apt install -y --no-install-recommends \
+    apt update && apt install -y --no-install-recommends \
       libxml2-dev zlib1g-dev libcurl4-openssl-dev \
       libpng-dev g++ libonig-dev libsodium-dev libzip-dev; \
+    rm -rf /var/lib/apt/lists/*; \
     cd /usr/local/src; \
     wget -q https://www.php.net/distributions/php-${PHP_VERSION}.tar.gz; \
     tar -xf php-${PHP_VERSION}.tar.gz; \
