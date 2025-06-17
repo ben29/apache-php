@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
 
 ./configure \
-		--prefix=/etc/httpd \
+    --prefix=/etc/httpd \
     --bindir=/usr/local/bin \
     --sbindir=/usr/local/bin \
     --datadir=/var/www \
     --mandir=/var/www \
     --with-mpm=event \
-    --enable-deflate \
     --enable-unique-id \
     --enable-mods-static=most \
     --enable-logio \
