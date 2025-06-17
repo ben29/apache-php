@@ -9,7 +9,7 @@
     --with-mpm=event \
     --enable-deflate \
     --enable-unique-id \
-    --enable-mods-static=most \
+    --enable-mods-static=all \
     --enable-logio \
     --enable-ssl \
     --enable-rewrite \
