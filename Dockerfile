@@ -35,7 +35,7 @@ RUN set -eux; \
     make -j"$(nproc)"; \
     find -type f -name '*.a' -delete; \
     make install; \
-     strip /usr/local/bin/php; \
+    strip /usr/local/bin/php; \
     curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer; \
     find /usr/local/bin -type f ! \( -name apachectl -o -name php -o -name httpd \) -delete;
 
@@ -50,6 +50,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # Runtime: Copy only necessary files
 COPY --chown=www-data:www-data conf/httpd /etc/httpd/conf
+COPY --chown=www-data:www-data conf/modules /etc/httpd/modules
 COPY --chown=www-data:www-data --from=build /usr/local/bin /usr/local/bin
 COPY conf/php/php.ini /etc/php.ini
 COPY --chown=www-data:www-data --chmod=755 apache2-foreground /apache2-foreground
