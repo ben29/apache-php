@@ -54,15 +54,18 @@ COPY conf/php/php.ini /etc/php.ini
 # Entrypoint
 COPY --chown=www-data:www-data --chmod=755 apache2-foreground /apache2-foreground
 
-# Create Apache log redirection to stdout/stderr
+# Prepare logs and HTML dir
 RUN ln -sfT /dev/stderr /var/log/error_log && \
-    ln -sfT /dev/stdout /var/log/access_log
+    ln -sfT /dev/stdout /var/log/access_log && \
+    mkdir -p /var/www/html && \
+    chown -R www-data:www-data /var/www/html
 
 # Set working directory
-WORKDIR /var/www/htdocs
+WORKDIR /var/www/html
 
 # Expose ports
 EXPOSE 80 443
+
 STOPSIGNAL SIGWINCH
 
 # Healthcheck
