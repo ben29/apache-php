@@ -22,7 +22,9 @@ RUN set -eux; \
     make -j"$(nproc)"; \
     make install; \
     strip --strip-unneeded /usr/local/bin/httpd || true; \
-    strip --strip-unneeded /usr/local/bin/apachectl || true
+    strip --strip-unneeded /usr/local/bin/apachectl || true; \
+    # Clean up unnecessary build dependencies
+    apt-get purge -y gcc make wget && apt-get autoremove -y && apt-get clean
 
 ### Build PHP (mod_php)
 RUN set -eux; \
@@ -39,10 +41,12 @@ RUN set -eux; \
     make install; \
     strip --strip-unneeded /usr/local/bin/php || true; \
     curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer; \
-    find /usr/local/bin -type f ! \( -name apachectl -o -name php -o -name httpd \) -delete
+    find /usr/local/bin -type f ! \( -name apachectl -o -name php -o -name httpd \) -delete; \
+    # Clean up unnecessary build dependencies
+    apt-get purge -y g++ wget && apt-get autoremove -y && apt-get clean
 
 # ---- Stage 2: Runtime Image ----
-FROM debian:12.11
+FROM debian:12.11-slim
 
 # Install runtime dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
