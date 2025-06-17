@@ -1,5 +1,5 @@
 # ---- Build Apache, PHP, and Composer in a single layer ----
-FROM debian:12.11-slim as build
+FROM debian:12.11-slim AS build
 
 ARG HTTPD_VERSION=2.4.63
 ARG PHP_VERSION=8.4.8
