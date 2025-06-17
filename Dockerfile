@@ -34,7 +34,7 @@ ARG DEPEND="gcc g++ make autoconf libtool perl wget \
 # Copy build script
 COPY configure/php.sh /usr/local/src/php.sh
 
-COPY --from=build-apache /usr/local/bin/apxs /usr/local/bin/apxs
+COPY --from=build-apache /usr/local/bin /usr/local/bin
 COPY --from=build-apache /var/www/build /var/www/build
 
 RUN set -eux; \
