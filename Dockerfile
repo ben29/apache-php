@@ -14,7 +14,7 @@ RUN set -eux; \
       wget ca-certificates \
       libpcre3-dev libapr1-dev libaprutil1-dev gcc libssl-dev \
       libnghttp2-dev make libxml2-dev zlib1g-dev libcurl4-openssl-dev \
-      libpng-dev g++ libonig-dev libsodium-dev libzip-dev libldap-2.4-2 && \
+      libpng-dev g++ libonig-dev libsodium-dev libzip-dev && \
     cd /usr/local/src; \
     wget -q https://dlcdn.apache.org/httpd/httpd-${HTTPD_VERSION}.tar.gz; \
     tar -xf httpd-${HTTPD_VERSION}.tar.gz; \
