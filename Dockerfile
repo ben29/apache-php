@@ -27,14 +27,14 @@ FROM debian:12.11 AS build-php
 
 ARG PHP_VERSION=8.4.8
 ARG DEPEND="gcc g++ make autoconf libtool perl wget \
-            libxml2-dev libcurl4-openssl-dev libpng-dev \
+            libapr1-dev libxml2-dev libcurl4-openssl-dev libpng-dev \
             libonig-dev libsodium-dev libzip-dev libssl-dev \
             libpcre3-dev zlib1g-dev"
 
 # Copy build script
 COPY configure/php.sh /usr/local/src/php.sh
 
-COPY --from=build-apache /usr/local/bin /usr/local/bin
+#COPY --from=build-apache /usr/local/bin /usr/local/bin
 COPY --from=build-apache /var/www/build /var/www/build
 
 RUN set -eux; \
