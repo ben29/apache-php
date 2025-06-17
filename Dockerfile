@@ -33,6 +33,8 @@ ARG DEPEND="gcc g++ make autoconf libtool perl wget \
 # Copy build script
 COPY configure/php.sh /usr/local/src/php.sh
 
+COPY --from=build-apache /usr/local/bin/apxs /usr/local/bin/apxs
+
 RUN set -eux; \
     apt-get update; \
     apt-get install -y --no-install-recommends $DEPEND ca-certificates curl; \
