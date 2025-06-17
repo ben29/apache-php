@@ -42,7 +42,8 @@ RUN set -eux; \
     php -n installer; \
     mv composer.phar /usr/bin/; \
     # Strip all binaries in /usr/local/bin
-    strip --strip-unneeded /usr/local/bin/*; \
+    # Strip only the executable files in /usr/local/bin
+    find /usr/local/bin/ -type f -executable -exec strip --strip-unneeded {} \;; \
     # Clean up build dependencies and unnecessary files
     apt-get purge -y --auto-remove gcc make g++ wget binutils; \
     apt autoremove -y; \
