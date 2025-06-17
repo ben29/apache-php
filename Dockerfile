@@ -62,7 +62,7 @@ COPY conf/php/php.ini /etc/php.ini
 COPY --from=build /usr/local/bin/httpd /usr/local/bin/
 COPY --from=build /usr/local/bin/apachectl /usr/local/bin/
 COPY --from=build /usr/local/bin/php /usr/local/bin/
-COPY --from=build /usr/bin/composer /usr/bin/
+#COPY --from=build /usr/bin/composer /usr/bin/
 COPY --chown=www-data:www-data --chmod=755 apache2-foreground /apache2-foreground
 
 # Prepare logs and htdocs directory
