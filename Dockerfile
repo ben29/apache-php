@@ -19,7 +19,7 @@ RUN set -eux; \
     sh /usr/local/src/httpd.sh; \
     make -j"$(nproc)"; \
     make install; \
-    strip /usr/local/bin/httpd /usr/local/bin/apachectl
+    strip /usr/local/bin/httpd
 
 # ---- Stage 2: Build PHP ----
 FROM debian:12.11 AS build-php
