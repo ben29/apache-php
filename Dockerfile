@@ -24,8 +24,10 @@ RUN set -eux; \
     sh /usr/local/src/httpd.sh; \
     make -j "$(nproc)"; \
     make install; \
-    chown -R www-data:www-data /etc/httpd /var/www; \
-    ln -sfT /dev/stderr /var/log/error_log; \
+    # # Prepare logs and htdocs directory
+    mkdir -p /var/www/htdocs && \
+    chown -R www-data:www-data /var/www/htdocs && \
+    ln -sfT /dev/stderr /var/log/error_log && \
     ln -sfT /dev/stdout /var/log/access_log; \
     # Build PHP (mod_php)
     cd /usr/local/src; \
@@ -47,29 +49,9 @@ RUN set -eux; \
     apt autoremove -y; \
     rm -rf /var/www/man* /usr/local/src/* /var/lib/apt/lists/*;
 
-# ---- Runtime Image ----
-# Install runtime dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    ca-certificates libssl-dev libnghttp2-dev libpcre3-dev \
-    libaprutil1-dev libxml2-dev libcurl4-openssl-dev \
-    libonig-dev libsodium-dev libzip-dev; \
-    rm -rf /var/lib/apt/lists/*;
-
 # Copy configurations and binaries
 COPY --chown=www-data:www-data conf/httpd /etc/httpd/conf
-COPY --chown=www-data:www-data --from=build /etc/httpd/modules /etc/httpd/modules
-#COPY conf/php/php.ini /etc/php.ini
-COPY --from=build /usr/local/bin/httpd /usr/local/bin/
-COPY --from=build /usr/local/bin/apachectl /usr/local/bin/
-COPY --from=build /usr/local/bin/php /usr/local/bin/
-COPY --from=build /usr/bin/composer /usr/bin/
 COPY --chown=www-data:www-data --chmod=755 apache2-foreground /apache2-foreground
-
-# Prepare logs and htdocs directory
-RUN mkdir -p /var/www/htdocs && \
-    chown -R www-data:www-data /var/www/htdocs && \
-    ln -sfT /dev/stderr /var/log/error_log && \
-    ln -sfT /dev/stdout /var/log/access_log;
 
 # Set working directory
 WORKDIR /var/www/htdocs
