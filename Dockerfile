@@ -1,12 +1,8 @@
 # ---- Stage 1: Build Apache and PHP ----
-FROM debian:12.11 AS build
+FROM debian:12.11-slim AS build
 
 ARG HTTPD_VERSION=2.4.63
 ARG PHP_VERSION=8.4.8
-ARG DEPEND="libapr1-dev libaprutil1-dev gcc libpcre3-dev zlib1g-dev \
-            libssl-dev libnghttp2-dev make libxml2-dev libcurl4-openssl-dev \
-            libpng-dev g++ libonig-dev libsodium-dev libzip-dev wget \
-            autoconf libtool perl"
 
 # Copy build scripts
 COPY configure/ /usr/local/src
@@ -14,7 +10,9 @@ COPY configure/ /usr/local/src
 ### Build Apache HTTP Server
 RUN set -eux; \
     apt-get update; \
-    apt-get install -y --no-install-recommends $DEPEND ca-certificates curl; \
+    apt-get install -y --no-install-recommends \
+      wget \
+      libapr1-dev libaprutil1-dev gcc libssl-dev libnghttp2-dev make; \
     rm -rf /var/lib/apt/lists/*; \
     cd /usr/local/src; \
     wget -q https://dlcdn.apache.org/httpd/httpd-${HTTPD_VERSION}.tar.gz; \
@@ -28,6 +26,9 @@ RUN set -eux; \
 
 ### Build PHP (mod_php)
 RUN set -eux; \
+    apt install -y --no-install-recommends \
+      libxml2-dev zlib1g-dev libcurl4-openssl-dev \
+      libpng-dev g++ libonig-dev libsodium-dev libzip-dev; \
     cd /usr/local/src; \
     wget -q https://www.php.net/distributions/php-${PHP_VERSION}.tar.gz; \
     tar -xf php-${PHP_VERSION}.tar.gz; \
