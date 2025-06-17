@@ -12,7 +12,9 @@ RUN set -eux; \
     apt-get update && \
     apt-get install -y --no-install-recommends \
       wget ca-certificates \
-      libpcre3-dev libapr1-dev libaprutil1-dev gcc libssl-dev libnghttp2-dev make && \
+      libpcre3-dev libapr1-dev libaprutil1-dev gcc libssl-dev \
+      libnghttp2-dev make libxml2-dev zlib1g-dev libcurl4-openssl-dev \
+      libpng-dev g++ libonig-dev libsodium-dev libzip-dev libldap-2.4-2 && \
     cd /usr/local/src; \
     wget -q https://dlcdn.apache.org/httpd/httpd-${HTTPD_VERSION}.tar.gz; \
     tar -xf httpd-${HTTPD_VERSION}.tar.gz; \
@@ -21,16 +23,10 @@ RUN set -eux; \
     make -j"$(nproc)"; \
     make install; \
     strip --strip-unneeded /usr/local/bin/httpd || true; \
-    strip --strip-unneeded /usr/local/bin/apachectl || true; \
-    # Clean up unnecessary build dependencies
-    apt-get purge -y gcc make wget && apt-get autoremove -y && apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    strip --strip-unneeded /usr/local/bin/apachectl || true;
 
 ### Build PHP (mod_php)
 RUN set -eux; \
-    apt update && apt install -y --no-install-recommends \
-      ca-certificates libxml2-dev zlib1g-dev libcurl4-openssl-dev \
-      libpng-dev g++ libonig-dev libsodium-dev libzip-dev && \
     cd /usr/local/src; \
     wget -q https://www.php.net/distributions/php-${PHP_VERSION}.tar.gz; \
     tar -xf php-${PHP_VERSION}.tar.gz; \
@@ -53,7 +49,7 @@ FROM debian:12.11-slim
 
 # Install runtime dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    ca-certificates libssl-dev libnghttp2-dev libpcre3-dev libldap2-dev \
+    ca-certificates libssl-dev libnghttp2-dev libpcre3-dev libldap-2.4-2 \
     libaprutil1-dev libxml2-dev libcurl4-openssl-dev \
     libonig-dev libsodium-dev libzip-dev; \
     rm -rf /var/lib/apt/lists/*
