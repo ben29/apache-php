@@ -11,13 +11,11 @@ ARG DEPEND="libapr1-dev libaprutil1-dev gcc libpcre3-dev zlib1g-dev \
 # Copy build scripts
 COPY configure/ /usr/local/src
 
+### Build Apache HTTP Server
 RUN set -eux; \
     apt-get update; \
     apt-get install -y --no-install-recommends $DEPEND ca-certificates curl; \
-    rm -rf /var/lib/apt/lists/*
-
-### Build Apache HTTP Server
-RUN set -eux; \
+    rm -rf /var/lib/apt/lists/*; \
     cd /usr/local/src; \
     wget -q https://dlcdn.apache.org/httpd/httpd-${HTTPD_VERSION}.tar.gz; \
     tar -xf httpd-${HTTPD_VERSION}.tar.gz; \
@@ -25,11 +23,6 @@ RUN set -eux; \
     sh /usr/local/src/httpd.sh; \
     make -j"$(nproc)"; \
     make install; \
-    # Setup SSL certificates
-    openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-      -keyout /etc/httpd/conf/server.key \
-      -out /etc/httpd/conf/server.crt \
-      -config /etc/httpd/conf/cert.txt; \
     # Validate config
     httpd -t
 
