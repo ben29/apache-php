@@ -13,7 +13,6 @@ RUN set -eux; \
     apt-get install -y --no-install-recommends \
       wget \
       libpcre3-dev libapr1-dev libaprutil1-dev gcc libssl-dev libnghttp2-dev make && \
-    rm -rf /var/lib/apt/lists/*; \
     cd /usr/local/src; \
     wget -q https://dlcdn.apache.org/httpd/httpd-${HTTPD_VERSION}.tar.gz; \
     tar -xf httpd-${HTTPD_VERSION}.tar.gz; \
@@ -24,14 +23,14 @@ RUN set -eux; \
     strip --strip-unneeded /usr/local/bin/httpd || true; \
     strip --strip-unneeded /usr/local/bin/apachectl || true; \
     # Clean up unnecessary build dependencies
-    apt-get purge -y gcc make wget && apt-get autoremove -y && apt-get clean
+    apt-get purge -y gcc make wget && apt-get autoremove -y && apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 ### Build PHP (mod_php)
 RUN set -eux; \
     apt update && apt install -y --no-install-recommends \
       libxml2-dev zlib1g-dev libcurl4-openssl-dev \
       libpng-dev g++ libonig-dev libsodium-dev libzip-dev && \
-    rm -rf /var/lib/apt/lists/*; \
     cd /usr/local/src; \
     wget -q https://www.php.net/distributions/php-${PHP_VERSION}.tar.gz; \
     tar -xf php-${PHP_VERSION}.tar.gz; \
@@ -46,7 +45,8 @@ RUN set -eux; \
     # Remove unnecessary files
     find /usr/local/bin -type f ! \( -name apachectl -o -name php -o -name httpd \) -delete; \
     # Clean up unnecessary build dependencies
-    apt-get purge -y g++ wget && apt-get autoremove -y && apt-get clean
+    apt-get purge -y g++ wget && apt-get autoremove -y && apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # ---- Stage 2: Runtime Image ----
 FROM debian:12.11-slim
@@ -55,7 +55,8 @@ FROM debian:12.11-slim
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libapr1 libaprutil1 libpcre3 zlib1g libssl3 libnghttp2-14 \
     libxml2 libcurl4 libpng16-16 libonig5 libsodium23 libzip4 \
-    ca-certificates curl && rm -rf /var/lib/apt/lists/*
+    ca-certificates curl && \
+    rm -rf /var/lib/apt/lists/*
 
 # Copy configurations
 COPY --chown=www-data:www-data conf/httpd /etc/httpd/conf
