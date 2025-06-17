@@ -52,7 +52,7 @@ FROM debian:12.11-slim
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates libssl-dev libnghttp2-dev libpcre3-dev \
     libaprutil1-dev libxml2-dev libcurl4-openssl-dev \
-    libonig-dev libsodium-dev libzip-dev libldap-2.4-2 && \
+    libonig-dev libsodium-dev libzip-dev && \
     rm -rf /var/lib/apt/lists/*
 
 # Copy configurations
