@@ -56,12 +56,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/*;
 
 # Copy configurations and binaries
-COPY --chown=www-data:www-data conf/httpd /etc/httpd/conf
-COPY --chown=www-data:www-data --from=build /etc/httpd/modules /etc/httpd/modules
-COPY conf/php/php.ini /etc/php.ini
-COPY --from=build /usr/local/bin/httpd /usr/local/bin/
-COPY --from=build /usr/local/bin/apachectl /usr/local/bin/
-COPY --from=build /usr/local/bin/php /usr/local/bin/
+#COPY --chown=www-data:www-data conf/httpd /etc/httpd/conf
+#COPY --chown=www-data:www-data --from=build /etc/httpd/modules /etc/httpd/modules
+#COPY conf/php/php.ini /etc/php.ini
+#COPY --from=build /usr/local/bin/httpd /usr/local/bin/
+#COPY --from=build /usr/local/bin/apachectl /usr/local/bin/
+#COPY --from=build /usr/local/bin/php /usr/local/bin/
 #COPY --from=build /usr/bin/composer /usr/bin/
 COPY --chown=www-data:www-data --chmod=755 apache2-foreground /apache2-foreground
 
