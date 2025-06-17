@@ -9,7 +9,7 @@
     --with-mpm=event \
     --enable-deflate \
     --enable-unique-id \
-    --enable-mods-static=all \
+    --enable-mods-static=most \
     --enable-logio \
     --enable-ssl \
     --enable-rewrite \
@@ -56,6 +56,7 @@
     --disable-authz-dbd \
     --disable-authn-socache \
     --disable-watchdog \
+    --disable-heartmonitor \
     --disable-access-compat \
     --disable-macro \
     --disable-dbd \
