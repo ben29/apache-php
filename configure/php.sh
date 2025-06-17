@@ -13,10 +13,8 @@ export \
 ./configure \
     "--build=${gnuArch}" \
     "--prefix=/etc/php" \
-    "--sysconfdir=/etc/php/conf" \
-    "--bindir=/usr/bin" \
-    "--sbindir=/usr/sbin" \
-    "--with-config-file-scan-dir=/etc/php" \
+    "--bindir=/usr/local/bin" \
+    "--sbindir=/usr/local/bin" \
     "--disable-all" \
     "--with-apxs2" \
     "--with-mysql-sock=/var/lib/mysql/mysql.sock" \

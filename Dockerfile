@@ -8,8 +8,7 @@ ARG DEPEND="libapr1-dev libaprutil1-dev gcc libpcre3-dev zlib1g-dev \
             libpng-dev g++ libonig-dev libsodium-dev libzip-dev wget \
             autoconf libtool perl"
 
-# Copy configuration and build scripts
-COPY conf/httpd /etc/httpd/conf
+# Copy build scripts
 COPY configure/ /usr/local/src
 
 RUN set -eux; \
@@ -23,7 +22,6 @@ RUN set -eux; \
     wget -q https://dlcdn.apache.org/httpd/httpd-${HTTPD_VERSION}.tar.gz; \
     tar -xf httpd-${HTTPD_VERSION}.tar.gz; \
     cd httpd-${HTTPD_VERSION}; \
-    sed -i -e "s/install-conf install-htdocs/install-htdocs/g" Makefile.in; \
     sh /usr/local/src/httpd.sh; \
     make -j"$(nproc)"; \
     make install; \
@@ -44,11 +42,10 @@ RUN set -eux; \
     sh /usr/local/src/php.sh; \
     make -j"$(nproc)"; \
     find -type f -name '*.a' -delete; \
-    make install
+    make install; \
+    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer; \
+    find /usr/local/bin -type f ! \( -name apachectl -o -name php -o -name httpd \) -delete;
 
-### Install Composer
-RUN set -eux; \
-    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 # ---- Stage 2: Runtime Image ----
 FROM debian:12.11
 
@@ -59,22 +56,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates curl && rm -rf /var/lib/apt/lists/*
 
 # Runtime: Copy only necessary files
-COPY --chown=www-data:www-data --from=build /etc/httpd /etc/httpd
-COPY --from=build /usr/sbin/httpd /usr/sbin/
-COPY --from=build /usr/sbin/apachectl /usr/sbin/
-COPY --from=build /etc/httpd/modules/libphp.so /etc/httpd/modules/
-
-COPY --from=build /usr/bin/php /usr/bin/
-COPY --from=build /usr/local/lib /usr/local/lib
+COPY --chown=www-data:www-data conf/httpd /etc/httpd
+COPY --chown=www-data:www-data --from=build /usr/local/bin /usr/local/bin
 #COPY --from=build /usr/local/src/conf/php/php.ini /etc/php/conf/php.ini
-
 
 # Entrypoint
 COPY --chown=www-data:www-data --chmod=755 apache2-foreground /apache2-foreground
 
 # Log redirection
-RUN ln -sfT /dev/stderr /var/log/error_log && \
-    ln -sfT /dev/stdout /var/log/access_log
+#RUN ln -sfT /dev/stderr /var/log/error_log && \
+#    ln -sfT /dev/stdout /var/log/access_log
 
 # Set working directory
 WORKDIR /var/www/htdocs

@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 
 ./configure \
-		--prefix="/etc/httpd" \
-    --bindir=/usr/bin \
-    --sbindir=/usr/sbin \
-    --sysconfdir=/etc/httpd/conf \
+		--prefix=/etc/httpd \
+    --bindir=/usr/local/bin \
+    --sbindir=/usr/local/bin \
     --datadir=/var/www \
     --mandir=/var/www \
     --with-mpm=event \
