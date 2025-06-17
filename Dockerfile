@@ -1,17 +1,13 @@
-# ---- Stage 1: Build Apache and PHP ----
-FROM debian:12.11 AS build
+# ---- Stage 1: Build Apache HTTP Server ----
+FROM debian:12.11 AS build-apache
 
 ARG HTTPD_VERSION=2.4.63
-ARG PHP_VERSION=8.4.8
 ARG DEPEND="libapr1-dev libaprutil1-dev gcc libpcre3-dev zlib1g-dev \
-            libssl-dev libnghttp2-dev make libxml2-dev libcurl4-openssl-dev \
-            libpng-dev g++ libonig-dev libsodium-dev libzip-dev wget \
-            autoconf libtool perl"
+            libssl-dev libnghttp2-dev make wget autoconf libtool perl"
 
 # Copy build scripts
-COPY configure/ /usr/local/src
+COPY configure/httpd.sh /usr/local/src/httpd.sh
 
-### Build Apache HTTP Server
 RUN set -eux; \
     apt-get update; \
     apt-get install -y --no-install-recommends $DEPEND ca-certificates curl; \
@@ -22,10 +18,25 @@ RUN set -eux; \
     cd httpd-${HTTPD_VERSION}; \
     sh /usr/local/src/httpd.sh; \
     make -j"$(nproc)"; \
-    make install;
+    make install; \
+    strip /usr/local/bin/httpd /usr/local/bin/apachectl
 
-### Build PHP
+# ---- Stage 2: Build PHP ----
+FROM debian:12.11 AS build-php
+
+ARG PHP_VERSION=8.4.8
+ARG DEPEND="gcc g++ make autoconf libtool perl wget \
+            libxml2-dev libcurl4-openssl-dev libpng-dev \
+            libonig-dev libsodium-dev libzip-dev libssl-dev \
+            libpcre3-dev zlib1g-dev"
+
+# Copy build script
+COPY configure/php.sh /usr/local/src/php.sh
+
 RUN set -eux; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends $DEPEND ca-certificates curl; \
+    rm -rf /var/lib/apt/lists/*; \
     cd /usr/local/src; \
     wget -q https://www.php.net/distributions/php-${PHP_VERSION}.tar.gz; \
     tar -xf php-${PHP_VERSION}.tar.gz; \
@@ -34,10 +45,10 @@ RUN set -eux; \
     make -j"$(nproc)"; \
     find -type f -name '*.a' -delete; \
     make install; \
-    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer; \
-    find /usr/local/bin -type f ! \( -name apachectl -o -name php -o -name httpd \) -delete;
+    strip /usr/local/bin/php; \
+    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 
-# ---- Stage 2: Runtime Image ----
+# ---- Stage 3: Final Runtime Image ----
 FROM debian:12.11
 
 # Install runtime dependencies
@@ -46,32 +57,42 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxml2 libcurl4 libpng16-16 libonig5 libsodium23 libzip4 \
     ca-certificates curl && rm -rf /var/lib/apt/lists/*
 
-# Runtime: Copy only necessary files
-COPY --chown=www-data:www-data conf/httpd /etc/httpd/conf
-COPY --chown=www-data:www-data --from=build /usr/local/bin /usr/local/bin
-COPY conf/php/php.ini /etc/php.ini
-COPY --chown=www-data:www-data --chmod=755 apache2-foreground /apache2-foreground
-
-# Prepare logs and htdocs directory
+# Set up directories and permissions
 RUN mkdir -p /var/www/htdocs && \
-    chown -R www-data:www-data /var/www/htdocs && \
-    ln -sfT /dev/stderr /var/log/error_log && \
-    ln -sfT /dev/stdout /var/log/access_log
+    mkdir -p /var/log/httpd && \
+    mkdir -p /var/run && \
+    chown -R www-data:www-data /var/www /var/log/httpd /var/run
+
+# Copy Apache config
+COPY --chown=www-data:www-data conf/httpd /etc/httpd/conf
+
+# Copy php.ini
+COPY conf/php/php.ini /etc/php.ini
+
+# Copy binaries
+COPY --from=build-apache /usr/local/bin/httpd /usr/local/bin/httpd
+COPY --from=build-apache /usr/local/bin/apachectl /usr/local/bin/apachectl
+COPY --from=build-php /usr/local/bin/php /usr/local/bin/php
+COPY --from=build-php /usr/bin/composer /usr/bin/composer
+
+# Entrypoint
+COPY --chown=www-data:www-data --chmod=755 apache2-foreground /apache2-foreground
 
 # Set working directory
 WORKDIR /var/www/htdocs
 
+# Apache expects these logs and pid files
+RUN ln -sfT /dev/stderr /var/log/httpd/error_log && \
+    ln -sfT /dev/stdout /var/log/httpd/access_log
+
 # Expose ports
 EXPOSE 80 443
-
 STOPSIGNAL SIGWINCH
 
 # Healthcheck
-HEALTHCHECK --interval=30s --timeout=5s \
-    CMD curl -f http://localhost/ || exit 1
+HEALTHCHECK --interval=30s --timeout=5s CMD curl -f http://localhost/ || exit 1
 
-# Run as non-root
+# Switch to non-root user
 USER www-data
 
-# Entrypoint script
 ENTRYPOINT ["/apache2-foreground"]
