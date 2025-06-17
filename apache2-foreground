@@ -4,17 +4,14 @@ set -e
 # Fix ulimit
 ulimit -s unlimited
 
-# Backup the original Apache virtual hosts configuration
-cp /etc/httpd/conf/httpd-vhosts.conf /etc/httpd/conf/httpd-vhosts.conf.bak
-
 # Replace Domain
 if [ -n "${SITE_URL}" ]; then
-  sed -i "s|/localhost|${SITE_URL}|g" /etc/httpd/conf/httpd-vhosts.conf
+  sed -i "s|/localhost|${SITE_URL}|g" /etc/httpd/httpd-vhosts.conf
 fi
 
 # Detect Symfony and change DocRoot
 if [ -n "${APP_SECRET}" ]; then
-  sed -i "s|/var/www/htdocs|/var/www/htdocs/public|g" /etc/httpd/conf/httpd-vhosts.conf
+  sed -i "s|/var/www/htdocs|/var/www/htdocs/public|g" /etc/httpd/httpd-vhosts.conf
 fi
 
 # Apache gets grumpy about PID files pre-existing
