@@ -17,7 +17,7 @@ export \
     "--sbindir=/usr/local/bin" \
     "--with-config-file-scan-dir=/etc" \
     "--disable-all" \
-    "--with-apxs2" \
+    "--with-apxs2=/usr/local/bin/apxs" \
     "--with-mysql-sock=/var/lib/mysql/mysql.sock" \
     "--with-mysqli=mysqlnd" \
     "--with-pdo-mysql=mysqlnd" \
