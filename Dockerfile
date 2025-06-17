@@ -11,7 +11,7 @@ RUN set -eux; \
     # Define dependencies
     DEPEND="libapr1-dev libaprutil1-dev gcc libpcre3-dev zlib1g-dev libssl-dev \
     libnghttp2-dev make libxml2-dev libcurl4-openssl-dev libpng-dev g++ \
-    libonig-dev libsodium-dev libzip-dev wget ca-certificates curl"; \
+    libonig-dev libsodium-dev libzip-dev wget ca-certificates curl binutils"; \
     # Install build dependencies
     apt-get update && apt-get install -y --no-install-recommends $DEPEND; \
     rm -rf /var/lib/apt/lists/*; \
@@ -23,7 +23,7 @@ RUN set -eux; \
     sh /usr/local/src/httpd.sh; \
     make -j "$(nproc)"; \
     make install; \
-    # # Prepare logs and htdocs directory
+    # Prepare logs and htdocs directory
     chown -R www-data:www-data /var/www && \
     ln -sfT /dev/stderr /var/log/error_log && \
     ln -sfT /dev/stdout /var/log/access_log; \
@@ -41,8 +41,10 @@ RUN set -eux; \
     wget -q https://getcomposer.org/installer; \
     php -n installer; \
     mv composer.phar /usr/bin/; \
+    # Strip all binaries in /usr/local/bin
+    strip --strip-unneeded /usr/local/bin/*; \
     # Clean up build dependencies and unnecessary files
-    apt-get purge -y --auto-remove gcc make g++ wget; \
+    apt-get purge -y --auto-remove gcc make g++ wget binutils; \
     apt autoremove -y; \
     rm -rf installer /var/www/man* /usr/local/src/* /var/lib/apt/lists/*;
 
