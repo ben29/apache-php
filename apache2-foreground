@@ -15,8 +15,8 @@ if [ -n "${APP_SECRET}" ]; then
 fi
 
 # Apache gets grumpy about PID files pre-existing
-if [ -f /var/run/httpd.pid ]; then
-  rm -f /var/run/httpd.pid
+if [ -f /tmp/httpd.pid ]; then
+  rm -f /tmp/httpd.pid
 fi
 
 # Start Apache in the foreground

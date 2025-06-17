@@ -1,3 +1,5 @@
-.git/
+.git
 .github
+.gitignore
 Dockerfile
+build.sh
