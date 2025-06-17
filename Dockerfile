@@ -49,7 +49,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates curl && rm -rf /var/lib/apt/lists/*
 
 # Runtime: Copy only necessary files
-COPY --chown=www-data:www-data conf/httpd /etc/httpd
+COPY --chown=www-data:www-data conf/httpd /etc/httpd/conf
 COPY --chown=www-data:www-data --from=build /usr/local/bin /usr/local/bin
 COPY conf/php/php.ini /etc/php.ini
 
