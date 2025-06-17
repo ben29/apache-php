@@ -23,9 +23,10 @@ RUN set -eux; \
     sh /usr/local/src/httpd.sh; \
     make -j"$(nproc)"; \
     make install; \
-    strip /usr/local/bin/httpd;
+    strip --strip-unneeded /usr/local/bin/httpd || true; \
+    strip --strip-unneeded /usr/local/bin/apachectl || true
 
-### Build PHP
+### Build PHP (mod_php)
 RUN set -eux; \
     cd /usr/local/src; \
     wget -q https://www.php.net/distributions/php-${PHP_VERSION}.tar.gz; \
@@ -35,9 +36,9 @@ RUN set -eux; \
     make -j"$(nproc)"; \
     find -type f -name '*.a' -delete; \
     make install; \
-    strip /usr/local/bin/php; \
+    strip --strip-unneeded /usr/local/bin/php || true; \
     curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer; \
-    find /usr/local/bin -type f ! \( -name apachectl -o -name php -o -name httpd \) -delete;
+    find /usr/local/bin -type f ! \( -name apachectl -o -name php -o -name httpd \) -delete
 
 # ---- Stage 2: Runtime Image ----
 FROM debian:12.11
@@ -48,11 +49,18 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxml2 libcurl4 libpng16-16 libonig5 libsodium23 libzip4 \
     ca-certificates curl && rm -rf /var/lib/apt/lists/*
 
-# Runtime: Copy only necessary files
+# Copy configs
 COPY --chown=www-data:www-data conf/httpd /etc/httpd/conf
-COPY --chown=www-data:www-data --from=build conf/modules /etc/httpd/modules
-COPY --chown=www-data:www-data --from=build /usr/local/bin /usr/local/bin
+COPY --chown=www-data:www-data --from=build /etc/httpd/modules /etc/httpd/modules
 COPY conf/php/php.ini /etc/php.ini
+
+# Copy binaries
+COPY --from=build /usr/local/bin/httpd /usr/local/bin/
+COPY --from=build /usr/local/bin/apachectl /usr/local/bin/
+COPY --from=build /usr/local/bin/php /usr/local/bin/
+COPY --from=build /usr/bin/composer /usr/bin/
+
+# Entrypoint
 COPY --chown=www-data:www-data --chmod=755 apache2-foreground /apache2-foreground
 
 # Prepare logs and htdocs directory
