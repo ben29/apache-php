@@ -47,7 +47,7 @@ RUN set -eux; \
     # Clean up build dependencies and unnecessary files
     apt-get purge -y --auto-remove gcc make g++ wget binutils; \
     apt autoremove -y; \
-    rm -rf installer /var/www/man* /usr/local/src/* /var/lib/apt/lists/* /etc/php;
+    rm -rf installer /var/www/man* /usr/local/src/* /var/lib/apt/lists/* /etc/php /var/www/htdocs/index.html;
 
 # Copy configurations and binaries
 COPY --chown=www-data:www-data conf/httpd /etc/httpd/conf
