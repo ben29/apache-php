@@ -59,9 +59,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates curl && rm -rf /var/lib/apt/lists/*
 
 # Runtime: Copy only necessary files
-COPY --from=build /etc/httpd /etc/httpd
-COPY --from=build /usr/sbin/httpd /usr/bin/
-COPY --from=build /usr/sbin/apachectl /usr/bin/apachectl
+COPY --chown=www-data:www-data --from=build /etc/httpd /etc/httpd
+COPY --from=build /usr/sbin/httpd /usr/sbin/
+COPY --from=build /usr/sbin/apachectl /usr/sbin/
 COPY --from=build /etc/httpd/modules/libphp.so /etc/httpd/modules/
 
 COPY --from=build /usr/bin/php /usr/bin/
