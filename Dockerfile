@@ -49,7 +49,7 @@ FROM debian:12.11-slim
 
 # Install runtime dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    ca-certificates libssl-dev libnghttp2-dev libpcre3-dev libldap-2.4-2 \
+    ca-certificates libssl-dev libnghttp2-dev libpcre3-dev \
     libaprutil1-dev libxml2-dev libcurl4-openssl-dev \
     libonig-dev libsodium-dev libzip-dev; \
     rm -rf /var/lib/apt/lists/*
