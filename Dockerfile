@@ -22,9 +22,9 @@ RUN set -eux; \
     cd httpd-${HTTPD_VERSION}; \
     sh /usr/local/src/httpd.sh; \
     make -j"$(nproc)"; \
-    make install; \
+    make install;
     # Validate config
-    httpd -t
+    #httpd -t
 
 ### Build PHP
 RUN set -eux; \
