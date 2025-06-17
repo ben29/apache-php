@@ -19,6 +19,7 @@ RUN set -eux; \
     sh /usr/local/src/httpd.sh; \
     make -j"$(nproc)"; \
     make install; \
+    ls /usr/local/bin; \
     strip /usr/local/bin/httpd
 
 # ---- Stage 2: Build PHP ----
