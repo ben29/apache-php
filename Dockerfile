@@ -26,7 +26,7 @@ RUN set -eux; \
 FROM debian:12.11 AS build-php
 
 ARG PHP_VERSION=8.4.8
-ARG DEPEND="gcc g++ make autoconf libtool perl wget \
+ARG DEPEND="gcc g++ make autoconf libtool perl wget pkg-config \
             libapr1-dev libaprutil1-dev libxml2-dev libcurl4-openssl-dev libpng-dev \
             libonig-dev libsodium-dev libzip-dev libssl-dev \
             libpcre3-dev zlib1g-dev"
