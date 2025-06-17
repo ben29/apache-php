@@ -1,5 +1,5 @@
 # ---- Stage 1: Build Apache and PHP ----
-FROM debian:12.11-slim AS build
+FROM debian:12.11 AS build
 
 ARG HTTPD_VERSION=2.4.63
 ARG PHP_VERSION=8.4.8
@@ -46,7 +46,7 @@ RUN set -eux; \
     rm -rf /var/lib/apt/lists/* /usr/local/src/* /tmp/* /var/tmp/*
 
 # ---- Stage 2: Runtime Image ----
-FROM debian:12.11-slim
+FROM debian:12.11
 
 # Install runtime dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
