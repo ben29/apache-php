@@ -47,6 +47,7 @@ export \
     "--enable-gd" \
     "--enable-intl" \
     "--enable-xmlreader" \
+    "--disable-opcache-jit" \
     "--disable-cgi" \
     "--disable-phpdbg" \
     "--disable-ipv6"

@@ -8,7 +8,6 @@
     --mandir=/var/www \
     --with-mpm=event \
     --enable-unique-id \
-    --enable-mods-static=most \
     --enable-logio \
     --enable-ssl \
     --enable-rewrite \
@@ -19,6 +18,8 @@
     --enable-allowmethods \
     --enable-proxy-fcgi \
     --enable-so \
+    --enable-mods-shared=reallyall \
+    --enable-mpms-shared=all \
     --disable-actions \
     --disable-authn-socache \
     --disable-file-cache \

@@ -1,5 +1,5 @@
-# ---- Build Apache, PHP, and Composer in a single layer with Alpine ----
-FROM alpine:3.22.0
+# ---- Build Apache, PHP, and Composer in a single layer ----
+FROM debian:12.11-slim
 
 ARG HTTPD_VERSION=2.4.63
 ARG PHP_VERSION=8.4.8
@@ -7,13 +7,15 @@ ARG PHP_VERSION=8.4.8
 # Copy build scripts
 COPY configure/ /usr/local/src
 
-# Install build dependencies
 RUN set -eux; \
-    # Define dependencies for Apache, PHP, and Composer
-    DEPEND="g++ make apr-dev apr-util-dev pcre-dev nghttp2-dev perl libxml2-dev curl-dev libpng-dev icu-dev oniguruma-dev libzip-dev"; \
-    # Install dependencies
-    apk add --no-cache --virtual .build-deps $DEPEND; \
-    # Download and install Apache
+    # Define dependencies
+    DEPEND="libapr1-dev libaprutil1-dev gcc libpcre3-dev zlib1g-dev libssl-dev \
+    libnghttp2-dev make libxml2-dev libcurl4-openssl-dev libpng-dev g++ \
+    libonig-dev libsodium-dev libzip-dev wget ca-certificates curl binutils"; \
+    # Install build dependencies
+    apt-get update && apt-get install -y --no-install-recommends $DEPEND; \
+    rm -rf /var/lib/apt/lists/*; \
+    # Build Apache HTTP Server
     cd /usr/local/src; \
     wget -q https://dlcdn.apache.org/httpd/httpd-${HTTPD_VERSION}.tar.gz; \
     tar -xf httpd-${HTTPD_VERSION}.tar.gz; \
@@ -21,7 +23,7 @@ RUN set -eux; \
     sh /usr/local/src/httpd.sh; \
     make -j "$(nproc)"; \
     make install; \
-    # Apache-specific config
+    # Prepare logs and htdocs directory
     chown -R www-data:www-data /var/www && \
     ln -sfT /dev/stderr /var/log/error_log && \
     ln -sfT /dev/stdout /var/log/access_log; \
@@ -32,29 +34,27 @@ RUN set -eux; \
     cd php-${PHP_VERSION}; \
     sh /usr/local/src/php.sh; \
     make -j "$(nproc)"; \
+    find -type f -name '*.a' -delete; \
     make install; \
     # Install Composer
     cd /usr/local/src; \
     wget -q https://getcomposer.org/installer; \
     php -n installer; \
     mv composer.phar /usr/bin/; \
-    # Strip binaries to reduce size
+    # Strip all binaries in /usr/local/bin
+    # Strip only the executable files in /usr/local/bin
     find /usr/local/bin/ -type f -executable -exec strip --strip-unneeded {} \;; \
-    # Clean up build dependencies and unnecessary files \
-    deps="$( \
-        scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
-            | tr ',' '\n' \
-            | sort -u \
-            | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
-    )"; \
-    apk add --no-network --virtual .httpd-so-deps $deps; \
-    apk del --no-network .build-deps; \
-    apk del build-base gcc libtool make wget; \
-    rm -rf /usr/local/src/* /var/lib/apt/lists/* /var/www/man* /etc/php /var/www/htdocs/index.html;
+    # Clean up build dependencies and unnecessary files
+    apt-get purge -y --auto-remove gcc make g++ wget binutils; \
+    apt autoremove -y; \
+    rm -rf installer /var/www/man* /usr/local/src/* /var/lib/apt/lists/* /etc/php /var/www/htdocs/index.html;
 
 # Copy configurations and binaries
 COPY --chown=www-data:www-data conf/httpd /etc/httpd/conf
 COPY --chown=www-data:www-data --chmod=755 apache2-foreground /apache2-foreground
+
+# Set working directory
+WORKDIR /var/www/htdocs
 
 # Expose ports
 EXPOSE 80 443
@@ -62,9 +62,6 @@ EXPOSE 80 443
 # Healthcheck
 HEALTHCHECK --interval=30s --timeout=5s \
     CMD curl -f http://localhost/ || exit 1
-
-# Set working directory
-WORKDIR /var/www/htdocs
 
 # Run as non-root user
 USER www-data
