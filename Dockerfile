@@ -36,10 +36,10 @@ RUN set -eux; \
     # Install Composer
     cd /usr/local/src; \
     wget -q https://getcomposer.org/installer; \
-    php -n installer; \
+    php -n installer -- --install-dir=/usr/bin --filename=composer; \
     mv composer.phar /usr/bin/; \
     # Strip binaries to reduce size
-    find /usr/local/bin/ -type f -executable -exec strip --strip-unneeded {} \;; \
+    find /usr/local/bin/ -type f -executable -exec strip --strip-unneeded {} \; \
     # Clean up build dependencies and unnecessary files
     apk del --no-network .build-deps; \
     apk del build-base gcc libtool make wget binutils; \
