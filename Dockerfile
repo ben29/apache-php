@@ -9,11 +9,12 @@ COPY configure/ /usr/local/src
 
 # Install build dependencies
 RUN set -eux; \
-    # Define dependencies for Apache, PHP, and Composer
-    DEPEND="g++ make apr-dev apr-util-dev pcre-dev nghttp2-dev perl libxml2-dev curl-dev libpng-dev icu-dev oniguruma-dev libzip-dev binutils pkgconfig"; \
-    # Install dependencies
-    apk add --no-cache --virtual .build-deps $DEPEND; \
-    # Download and install Apache
+    addgroup -g 82 www-data && adduser -D -u 82 -G www-data www-data; \
+    # Define build-time dependencies
+    BUILD_DEPS="g++ make apr-dev apr-util-dev pcre-dev nghttp2-dev perl libxml2-dev curl-dev libpng-dev icu-dev oniguruma-dev libzip-dev binutils pkgconfig wget"; \
+    # Install build dependencies
+    apk add --no-cache --virtual .build-deps $BUILD_DEPS; \
+    # Download and build Apache
     cd /usr/local/src; \
     wget -q https://dlcdn.apache.org/httpd/httpd-${HTTPD_VERSION}.tar.gz; \
     tar -xf httpd-${HTTPD_VERSION}.tar.gz; \
@@ -21,11 +22,11 @@ RUN set -eux; \
     sh /usr/local/src/httpd.sh; \
     make -j "$(nproc)"; \
     make install; \
-    # Apache-specific config
+    # Apache-specific configuration
     chown -R www-data:www-data /var/www && \
     ln -sfT /dev/stderr /var/log/error_log && \
     ln -sfT /dev/stdout /var/log/access_log; \
-    # Build PHP (mod_php)
+    # Download and build PHP
     cd /usr/local/src; \
     wget -q https://www.php.net/distributions/php-${PHP_VERSION}.tar.gz; \
     tar zxf php-${PHP_VERSION}.tar.gz; \
@@ -35,14 +36,15 @@ RUN set -eux; \
     make install; \
     # Install Composer
     cd /usr/local/src; \
-    wget -q https://getcomposer.org/installer; \
-    php -n installer -- --install-dir=/usr/bin --filename=composer; \
-    mv composer.phar /usr/bin/; \
-    # Strip binaries to reduce size
-    find /usr/local/bin/ -type f -executable -exec strip --strip-unneeded {} \; \
-    # Clean up build dependencies and unnecessary files
+    wget -q https://getcomposer.org/installer -O composer-setup.php; \
+    php -n composer-setup.php -- --install-dir=/usr/bin --filename=composer; \
+    # Strip unnecessary symbols from binaries to reduce size
+    find /usr/local/bin/ -type f -executable -exec strip --strip-unneeded {} \; || true; \
+    # Remove build dependencies
     apk del --no-network .build-deps; \
-    apk del build-base gcc libtool make wget binutils; \
+    # Install runtime-only dependencies
+    apk add --no-cache libxml2 libpng icu-libs oniguruma libzip curl pcre2 ca-certificates; \
+    # Clean up source and misc files
     rm -rf /usr/local/src/* /var/lib/apt/lists/* /var/www/man* /etc/php /var/www/htdocs/index.html;
 
 # Copy configurations and binaries
