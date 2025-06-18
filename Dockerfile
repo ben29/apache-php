@@ -10,7 +10,7 @@ COPY configure/ /usr/local/src
 # Install build dependencies
 RUN set -eux; \
     # Define dependencies for Apache, PHP, and Composer
-    DEPEND="g++ make apr-dev apr-util-dev pcre-dev nghttp2-dev perl libxml2-dev curl-dev libpng-dev icu-dev oniguruma-dev libzip-dev"; \
+    DEPEND="g++ make apr-dev apr-util-dev pcre-dev nghttp2-dev perl libxml2-dev curl-dev libpng-dev icu-dev oniguruma-dev libzip-dev binutils pkgconfig"; \
     # Install dependencies
     apk add --no-cache --virtual .build-deps $DEPEND; \
     # Download and install Apache
@@ -40,16 +40,9 @@ RUN set -eux; \
     mv composer.phar /usr/bin/; \
     # Strip binaries to reduce size
     find /usr/local/bin/ -type f -executable -exec strip --strip-unneeded {} \;; \
-    # Clean up build dependencies and unnecessary files \
-    deps="$( \
-        scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
-            | tr ',' '\n' \
-            | sort -u \
-            | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
-    )"; \
-    apk add --no-network --virtual .httpd-so-deps $deps; \
+    # Clean up build dependencies and unnecessary files
     apk del --no-network .build-deps; \
-    apk del build-base gcc libtool make wget; \
+    apk del build-base gcc libtool make wget binutils; \
     rm -rf /usr/local/src/* /var/lib/apt/lists/* /var/www/man* /etc/php /var/www/htdocs/index.html;
 
 # Copy configurations and binaries
