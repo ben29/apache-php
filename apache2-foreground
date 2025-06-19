@@ -1,23 +1,30 @@
 #!/bin/sh
 set -e
 
-# Fix ulimit
+echo "[INFO] Starting Apache entrypoint script..."
+
+# Remove stack size limit
+echo "[INFO] Setting unlimited stack size..."
 ulimit -s unlimited
 
-# Replace Domain
+# Replace localhost with SITE_URL in vhosts config
 if [ -n "${SITE_URL}" ]; then
-  sed -i "s|/localhost|${SITE_URL}|g" /etc/httpd/conf/httpd-vhosts.conf
+  echo "[INFO] Replacing 'localhost' with '${SITE_URL}' in Apache vhosts config..."
+  sed -i "s|localhost|${SITE_URL}|g" /etc/httpd/conf/httpd-vhosts.conf
 fi
 
-# Detect Symfony and change DocRoot
+# If APP_SECRET is present (Symfony), change DocumentRoot to /public
 if [ -n "${APP_SECRET}" ]; then
+  echo "[INFO] Symfony APP_SECRET detected. Adjusting DocumentRoot to '/public'..."
   sed -i "s|/var/www/htdocs|/var/www/htdocs/public|g" /etc/httpd/conf/httpd-vhosts.conf
 fi
 
-# Apache gets grumpy about PID files pre-existing
+# Clean up existing Apache PID file if it exists
 if [ -f /tmp/httpd.pid ]; then
+  echo "[INFO] Removing existing Apache PID file..."
   rm -f /tmp/httpd.pid
 fi
 
 # Start Apache in the foreground
+echo "[INFO] Starting Apache in the foreground..."
 exec apachectl -D FOREGROUND "$@"
