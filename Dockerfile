@@ -22,6 +22,7 @@ RUN set -eux; \
     wget -q https://dlcdn.apache.org/httpd/httpd-${HTTPD_VERSION}.tar.gz; \
     tar -xf httpd-${HTTPD_VERSION}.tar.gz; \
     cd httpd-${HTTPD_VERSION}; \
+    sed -i -e "s/install-conf install-htdocs/install-htdocs/g" Makefile.in; \
     sh /usr/local/src/httpd.sh; \
     make -j"$(nproc)"; \
     make install; \
