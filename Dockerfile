@@ -66,9 +66,6 @@ COPY conf/php/php.ini /etc
 # Expose HTTP/HTTPS
 EXPOSE 80 443
 
-# Healthcheck
-HEALTHCHECK --interval=30s --timeout=5s CMD curl -f http://localhost/ || exit 1
-
 # Set workdir, user, and entrypoint
 WORKDIR /var/www/htdocs
 
