@@ -18,61 +18,24 @@
     --enable-allowmethods \
     --enable-proxy-fcgi \
     --enable-so \
+    --enable-unixd \
+    --enable-authz-core \
+    --enable-dir \
+    --enable-mime \
+    --enable-env \
+    --enable-setenvif \
+    --enable-negotiation \
+    --enable-status \
     --disable-actions \
-    --disable-authn-socache \
-    --disable-file-cache \
-    --disable-cache \
-    --disable-cache-disk \
-    --disable-cache-socache \
-    --disable-socache-dbm \
-    --disable-socache-memcache \
-    --disable-socache-redis \
-    --disable-socache-dc \
-    --disable-md \
-    --disable-buffer \
-    --disable-userdir \
-    --disable-status \
-    --disable-dav \
     --disable-autoindex \
     --disable-cgi \
-    --disable-cgid \
-    --disable-info \
-    --disable-sed \
-    --disable-version \
-    --disable-auth-form \
-    --disable-auth-digest \
-    --disable-auth-basic \
-    --disable-authn-core \
-    --disable-authn-file \
-    --disable-authn-dbm \
-    --disable-authn-dbd \
-    --disable-authn-anon \
-    --disable-authz-groupfile \
-    --disable-authz-user \
-    --disable-authz-dbm \
-    --disable-authz-owner \
-    --disable-authz-dbd \
-    --disable-authn-socache \
-    --disable-watchdog \
-    --disable-heartmonitor \
-    --disable-access-compat \
-    --disable-macro \
+    --disable-dav \
+    --disable-userdir \
+    --disable-proxy-* \
+    --disable-auth-* \
+    --disable-cache \
+    --disable-socache-* \
+    --disable-md \
     --disable-dbd \
-    --disable-ext-filter \
-    --disable-session-dbd \
-    --disable-suexec \
-    --disable-substitute \
-    --disable-log-debug \
-    --disable-speling \
-    --disable-proxy-html \
-    --disable-proxy-connect \
-    --disable-proxy-ftp \
-    --disable-proxy-http \
-    --disable-proxy-scgi \
-    --disable-proxy-uwsgi \
-    --disable-proxy-ajp \
-    --disable-proxy-balancer \
-    --disable-proxy-express \
-    --disable-proxy-wstunnel \
-    --disable-proxy-fdpass \
-    --disable-vhost-alias
+    --disable-mpms-shared \
+    --disable-mods-shared
