@@ -13,7 +13,11 @@ on:
                 description: 'PHP VERSION'
                 required: true
                 default: '8.4.8'
-
+            composer:
+                type: string
+                description: 'COMPOSER VERSION'
+                required: true
+                default: '2.8.9'
 jobs:
     docker:
         runs-on: ubuntu-latest
@@ -43,5 +47,6 @@ jobs:
                     build-args: |
                         HTTPD_VERSION=${{ github.event.inputs.apache }}
                         PHP_VERSION=${{ github.event.inputs.php }}
+                        COMPOSER_VERSION=${{ github.event.inputs.composer }}
                     tags: |
                         benhakim2010/php-apache:1.0
