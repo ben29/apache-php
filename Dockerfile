@@ -40,7 +40,7 @@ RUN set -eux; \
     make install; \
     # --- Install Composer ---
     cd /usr/local/src; \
-    wget -q -O /usr/bin/composer https://getcomposer.org/download/${COMPOSER_VERSION}/composer.phar; \
+    wget -q -O /usr/bin/composer.phar https://getcomposer.org/download/${COMPOSER_VERSION}/composer.phar; \
     chmod +x /usr/bin/composer; \
     # Strip executables (safe-fail)
     find /usr/local/bin/ -type f -executable -exec strip --strip-unneeded {} \; || true; \
