@@ -7,6 +7,7 @@ ARG COMPOSER_VERSION=2.8.9
 
 # Copy build scripts
 COPY configure/ /usr/local/src
+COPY --chown=www-data:www-data conf/httpd /etc/httpd/conf
 
 # Install build and runtime dependencies
 RUN set -eux; \
@@ -58,7 +59,6 @@ RUN set -eux; \
     rm -rf /usr/local/src/* /var/www/man* /etc/php /var/www/htdocs/index.html
 
 # Copy configs & startup script
-COPY --chown=www-data:www-data conf/httpd /etc/httpd/conf
 COPY --chown=www-data:www-data --chmod=755 apache2-foreground /apache2-foreground
 COPY conf/php/php.ini /etc
 
