@@ -7,7 +7,6 @@ ARG COMPOSER_VERSION=2.8.9
 
 # Copy build scripts
 COPY configure/ /usr/local/src
-COPY --chown=www-data:www-data conf/httpd /etc/httpd/conf
 
 # Install build and runtime dependencies
 RUN set -eux; \
@@ -23,7 +22,6 @@ RUN set -eux; \
     wget -q https://dlcdn.apache.org/httpd/httpd-${HTTPD_VERSION}.tar.gz; \
     tar -xf httpd-${HTTPD_VERSION}.tar.gz; \
     cd httpd-${HTTPD_VERSION}; \
-    sed -i -e "s/install-conf install-htdocs/install-htdocs/g" Makefile.in; \
     sh /usr/local/src/httpd.sh; \
     make -j"$(nproc)"; \
     make install; \
@@ -55,10 +53,13 @@ RUN set -eux; \
     apk add --no-network --virtual .httpd-so-deps $deps; \
     # Remove build tools
     apk del .build-tools; \
+    # PERMISSIONS \
+    chown -R www-data:www-data -R /etc/httpd/conf; \
     # Cleanup
     rm -rf /usr/local/src/* /var/www/man* /etc/php /var/www/htdocs/index.html
 
 # Copy configs & startup script
+COPY --chown=www-data:www-data conf/httpd /etc/httpd/conf
 COPY --chown=www-data:www-data --chmod=755 apache2-foreground /apache2-foreground
 COPY conf/php/php.ini /etc
 
