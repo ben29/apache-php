@@ -41,7 +41,7 @@ RUN set -eux; \
     # --- Install Composer ---
     cd /usr/local/src; \
     wget -q -O /usr/bin/composer.phar https://getcomposer.org/download/${COMPOSER_VERSION}/composer.phar; \
-    chmod +x /usr/bin/composer; \
+    chmod +x /usr/bin/composer.phar; \
     # Strip executables (safe-fail)
     find /usr/local/bin/ -type f -executable -exec strip --strip-unneeded {} \; || true; \
     # Determine runtime .so deps and install
