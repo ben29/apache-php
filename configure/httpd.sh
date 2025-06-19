@@ -55,7 +55,6 @@
     --disable-authz-owner \
     --disable-authz-dbd \
     --disable-authn-socache \
-    --disable-watchdog \
     --disable-access-compat \
     --disable-macro \
     --disable-dbd \
