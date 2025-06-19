@@ -18,7 +18,6 @@
     --enable-headers \
     --enable-http2 \
     --enable-allowmethods \
-    --enable-proxy-fcgi \
     --enable-so \
     --disable-actions \
     --disable-authn-socache \
@@ -65,15 +64,5 @@
     --disable-substitute \
     --disable-log-debug \
     --disable-speling \
-    --disable-proxy-html \
-    --disable-proxy-connect \
-    --disable-proxy-ftp \
-    --disable-proxy-http \
-    --disable-proxy-scgi \
-    --disable-proxy-uwsgi \
-    --disable-proxy-ajp \
-    --disable-proxy-balancer \
-    --disable-proxy-express \
-    --disable-proxy-wstunnel \
-    --disable-proxy-fdpass \
+    --disable-proxy \
     --disable-vhost-alias
