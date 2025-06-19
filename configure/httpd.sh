@@ -16,7 +16,6 @@
     --enable-headers \
     --enable-http2 \
     --enable-allowmethods \
-    --enable-proxy-fcgi \
     --enable-so \
     --enable-unixd \
     --enable-authz-core \
