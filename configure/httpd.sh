@@ -60,7 +60,11 @@
     --disable-authz-owner \
     --disable-authz-dbd \
     --disable-cache \
-    --disable-socache-* \
+    --disable-socache-db \
+    --disable-socache-dbm \
+    --disable-socache-memcache \
+    --disable-socache-redis \
+    --disable-socache-shmcb \
     --disable-md \
     --disable-dbd \
     --disable-mpms-shared \
