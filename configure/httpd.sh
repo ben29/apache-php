@@ -1,57 +1,31 @@
-#!/usr/bin/env bash
-
 ./configure \
     --prefix=/etc/httpd \
-    --bindir=/usr/local/bin \
-    --sbindir=/usr/local/bin \
-    --datadir=/var/www \
-    --mandir=/var/www \
     --with-mpm=event \
-    --enable-so \
     --enable-unixd \
     --enable-authz-core \
     --enable-dir \
     --enable-mime \
-    --enable-env \
-    --enable-setenvif \
-    --enable-negotiation \
-    --enable-headers \
-    --enable-rewrite \
-    --enable-expires \
-    --enable-reqtimeout \
     --enable-logio \
-    --enable-unique-id \
-    --enable-ssl \
+    --enable-headers \
+    --enable-setenvif \
+    --enable-env \
     --enable-http2 \
-    --enable-allowmethods \
+    --enable-rewrite \
+    --enable-ssl \
+    --enable-expires \
+    --enable-unique-id \
     --enable-status \
-    --disable-cache \
+    --disable-so \
     --disable-cgi \
-    --disable-proxy \
+    --disable-dav \
     --disable-userdir \
-    --disable-actions \
     --disable-autoindex \
+    --disable-proxy \
+    --disable-cache \
     --disable-auth-basic \
     --disable-auth-digest \
     --disable-auth-form \
     --disable-authn-core \
     --disable-authn-file \
-    --disable-authn-dbm \
-    --disable-authn-dbd \
-    --disable-authn-anon \
-    --disable-authn-socache \
-    --disable-authz-groupfile \
     --disable-authz-user \
-    --disable-authz-dbm \
-    --disable-authz-owner \
-    --disable-authz-dbd \
-    --disable-mod-cache \
-    --disable-mod-cache-socache \
-    --disable-socache-dbm \
-    --disable-socache-memcache \
-    --disable-socache-redis \
-    --disable-socache-shmcb \
-    --disable-md \
-    --disable-dbd \
-    --disable-mpms-shared \
-    --disable-mods-shared
+    --disable-authz-groupfile
