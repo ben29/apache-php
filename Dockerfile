@@ -3,15 +3,14 @@ FROM alpine:3.22.0
 
 ARG HTTPD_VERSION=2.4.63
 ARG PHP_VERSION=8.4.8
+ARG COMPOSER_VERSION=2.5.8
 
 # Copy build scripts
 COPY configure/ /usr/local/src
 
 # Install build dependencies
 RUN set -eux; \
-    # Define dependencies for Apache, PHP, and Composer
     DEPEND="g++ make apr-dev apr-util-dev pcre-dev nghttp2-dev perl libxml2-dev curl-dev libpng-dev icu-dev oniguruma-dev libzip-dev"; \
-    # Install dependencies
     apk add --no-cache --virtual .build-deps $DEPEND; \
     # Download and install Apache
     cd /usr/local/src; \
@@ -35,12 +34,11 @@ RUN set -eux; \
     make install; \
     # Install Composer
     cd /usr/local/src; \
-    wget -q https://getcomposer.org/installer; \
-    php -n installer; \
-    mv composer.phar /usr/bin/; \
+    wget -q https://getcomposer.org/download/${COMPOSER_VERSION}/composer.phar; \
+    mv composer.phar /usr/bin/composer; \
     # Strip binaries to reduce size
     find /usr/local/bin/ -type f -executable -exec strip --strip-unneeded {} \;; \
-    # Clean up build dependencies and unnecessary files \
+    # Clean up build dependencies and unnecessary files
     deps="$( \
         scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
             | tr ',' '\n' \
