@@ -3,7 +3,7 @@ FROM alpine:3.22.0
 
 ARG HTTPD_VERSION=2.4.63
 ARG PHP_VERSION=8.4.8
-ARG COMPOSER_VERSION=2.5.8
+ARG COMPOSER_VERSION=2.8.9
 
 # Copy build scripts
 COPY configure/ /usr/local/src
@@ -39,8 +39,7 @@ RUN set -eux; \
     make install; \
     # --- Install Composer ---
     cd /usr/local/src; \
-    wget -q https://getcomposer.org/download/${COMPOSER_VERSION}/composer.phar; \
-    mv composer.phar /usr/bin/composer; \
+    wget -q -O /usr/bin/composer https://getcomposer.org/download/${COMPOSER_VERSION}/composer.phar; \
     chmod +x /usr/bin/composer; \
     # Strip executables (safe-fail)
     find /usr/local/bin/ -type f -executable -exec strip --strip-unneeded {} \; || true; \
