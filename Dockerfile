@@ -47,7 +47,7 @@ RUN set -eux; \
     )"; \
     apk add --no-network --virtual .httpd-so-deps $deps; \
     apk del --no-network .build-deps; \
-    apk del build-base gcc libtool make wget; \
+    apk del --no-network build-base gcc libtool make wget; \
     rm -rf /usr/local/src/* /var/lib/apt/lists/* /var/www/man* /etc/php /var/www/htdocs/index.html;
 
 # Copy configurations and binaries
