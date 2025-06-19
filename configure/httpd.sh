@@ -7,15 +7,6 @@
     --datadir=/var/www \
     --mandir=/var/www \
     --with-mpm=event \
-    --enable-unique-id \
-    --enable-logio \
-    --enable-ssl \
-    --enable-rewrite \
-    --enable-expires \
-    --enable-reqtimeout \
-    --enable-headers \
-    --enable-http2 \
-    --enable-allowmethods \
     --enable-so \
     --enable-unixd \
     --enable-authz-core \
@@ -24,15 +15,22 @@
     --enable-env \
     --enable-setenvif \
     --enable-negotiation \
+    --enable-headers \
+    --enable-rewrite \
+    --enable-expires \
+    --enable-reqtimeout \
+    --enable-logio \
+    --enable-unique-id \
+    --enable-ssl \
+    --enable-http2 \
+    --enable-allowmethods \
     --enable-status \
+    --disable-cache \
+    --disable-cgi \
+    --disable-proxy \
+    --disable-userdir \
     --disable-actions \
     --disable-autoindex \
-    --disable-cgi \
-    --disable-cgid \
-    --disable-dav \
-    --disable-info \
-    --disable-sed \
-    --disable-version \
     --disable-auth-basic \
     --disable-auth-digest \
     --disable-auth-form \
@@ -47,8 +45,6 @@
     --disable-authz-dbm \
     --disable-authz-owner \
     --disable-authz-dbd \
-    --disable-cache \
-    --disable-cache-socache \
     --disable-mod-cache \
     --disable-mod-cache-socache \
     --disable-socache-dbm \
@@ -58,29 +54,4 @@
     --disable-md \
     --disable-dbd \
     --disable-mpms-shared \
-    --disable-mods-shared \
-    --disable-proxy \
-    --disable-proxy-connect \
-    --disable-proxy-ftp \
-    --disable-proxy-http \
-    --disable-proxy-scgi \
-    --disable-proxy-uwsgi \
-    --disable-proxy-ajp \
-    --disable-proxy-balancer \
-    --disable-proxy-express \
-    --disable-proxy-wstunnel \
-    --disable-proxy-fdpass \
-    --disable-proxy-html \
-    --disable-userdir \
-    --disable-watchdog \
-    --disable-heartmonitor \
-    --disable-access-compat \
-    --disable-macro \
-    --disable-dbd \
-    --disable-ext-filter \
-    --disable-session-dbd \
-    --disable-suexec \
-    --disable-substitute \
-    --disable-log-debug \
-    --disable-speling \
-    --disable-vhost-alias
+    --disable-mods-shared
