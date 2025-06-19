@@ -28,8 +28,37 @@
     --disable-actions \
     --disable-autoindex \
     --disable-cgi \
+    --disable-cgid \
     --disable-dav \
-    --disable-userdir \
+    --disable-info \
+    --disable-sed \
+    --disable-version \
+    --disable-auth-basic \
+    --disable-auth-digest \
+    --disable-auth-form \
+    --disable-authn-core \
+    --disable-authn-file \
+    --disable-authn-dbm \
+    --disable-authn-dbd \
+    --disable-authn-anon \
+    --disable-authn-socache \
+    --disable-authz-groupfile \
+    --disable-authz-user \
+    --disable-authz-dbm \
+    --disable-authz-owner \
+    --disable-authz-dbd \
+    --disable-cache \
+    --disable-cache-socache \
+    --disable-mod-cache \
+    --disable-mod-cache-socache \
+    --disable-socache-dbm \
+    --disable-socache-memcache \
+    --disable-socache-redis \
+    --disable-socache-shmcb \
+    --disable-md \
+    --disable-dbd \
+    --disable-mpms-shared \
+    --disable-mods-shared \
     --disable-proxy \
     --disable-proxy-connect \
     --disable-proxy-ftp \
@@ -42,29 +71,16 @@
     --disable-proxy-wstunnel \
     --disable-proxy-fdpass \
     --disable-proxy-html \
-    --disable-auth-basic \
-    --disable-auth-digest \
-    --disable-auth-form \
-    --disable-authn-core \
-    --disable-authn-file \
-    --disable-authn-dbm \
-    --disable-authn-dbd \
-    --disable-authn-anon \
-    --disable-authn-socache \
-    --disable-authz-core \
-    --disable-authz-host \
-    --disable-authz-groupfile \
-    --disable-authz-user \
-    --disable-authz-dbm \
-    --disable-authz-owner \
-    --disable-authz-dbd \
-    --disable-cache \
-    --disable-socache-db \
-    --disable-socache-dbm \
-    --disable-socache-memcache \
-    --disable-socache-redis \
-    --disable-socache-shmcb \
-    --disable-md \
+    --disable-userdir \
+    --disable-watchdog \
+    --disable-heartmonitor \
+    --disable-access-compat \
+    --disable-macro \
     --disable-dbd \
-    --disable-mpms-shared \
-    --disable-mods-shared
+    --disable-ext-filter \
+    --disable-session-dbd \
+    --disable-suexec \
+    --disable-substitute \
+    --disable-log-debug \
+    --disable-speling \
+    --disable-vhost-alias

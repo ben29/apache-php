@@ -29,6 +29,7 @@ RUN set -eux; \
     chown -R www-data:www-data /var/www && \
     ln -sfT /dev/stderr /var/log/error_log && \
     ln -sfT /dev/stdout /var/log/access_log; \
+    httpd -t; \
     # --- Build PHP (mod_php) ---
     cd /usr/local/src; \
     wget -q https://www.php.net/distributions/php-${PHP_VERSION}.tar.gz; \
