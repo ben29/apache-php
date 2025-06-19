@@ -1,5 +1,5 @@
 # ---- Build Apache, PHP, and Composer in a single layer with Alpine ----
-FROM alpine:3.22.0
+FROM alpine:3.22
 
 ARG HTTPD_VERSION=2.4.63
 ARG PHP_VERSION=8.4.8
