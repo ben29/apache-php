@@ -31,7 +31,18 @@
     --disable-cgi \
     --disable-dav \
     --disable-userdir \
-    --disable-proxy-* \
+    --disable-proxy \
+    --disable-proxy-connect \
+    --disable-proxy-ftp \
+    --disable-proxy-http \
+    --disable-proxy-scgi \
+    --disable-proxy-uwsgi \
+    --disable-proxy-ajp \
+    --disable-proxy-balancer \
+    --disable-proxy-express \
+    --disable-proxy-wstunnel \
+    --disable-proxy-fdpass \
+    --disable-proxy-html \
     --disable-auth-* \
     --disable-cache \
     --disable-socache-* \
