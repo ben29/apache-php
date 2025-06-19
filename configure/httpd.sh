@@ -16,6 +16,7 @@
     --enable-expires \
     --enable-reqtimeout \
     --enable-headers \
+    --enable-watchdog \
     --enable-http2 \
     --enable-allowmethods \
     --enable-so \
