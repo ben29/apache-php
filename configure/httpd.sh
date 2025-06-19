@@ -18,7 +18,6 @@
     --enable-allowmethods \
     --enable-proxy-fcgi \
     --enable-so \
-    --enable-mods-shared=reallyall \
     --disable-actions \
     --disable-authn-socache \
     --disable-file-cache \
