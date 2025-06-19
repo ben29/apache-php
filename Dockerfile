@@ -1,5 +1,5 @@
 # ---- Build Apache, PHP, and Composer in a single layer with Alpine ----
-FROM alpine:3.22
+FROM alpine:3.22.0
 
 ARG HTTPD_VERSION=2.4.63
 ARG PHP_VERSION=8.4.8
@@ -10,10 +10,11 @@ COPY configure/ /usr/local/src
 
 # Install build and runtime dependencies
 RUN set -eux; \
-    apk add --no-cache --virtual .build-tools g++ make gcc build-base wget libtool; \
+    apk add --no-cache --virtual .build-tools \
+      g++ make gcc build-base wget libtool; \
     apk add --no-cache --virtual .runtime-libs \
       apr-dev apr-util-dev pcre-dev nghttp2-dev perl \
-        libxml2-dev curl-dev libpng-dev icu-dev oniguruma-dev libzip-dev; \
+      libxml2-dev curl-dev libpng-dev icu-dev oniguruma-dev libzip-dev; \
     # --- Build Apache ---
     cd /usr/local/src; \
     wget -q https://dlcdn.apache.org/httpd/httpd-${HTTPD_VERSION}.tar.gz; \
@@ -22,7 +23,7 @@ RUN set -eux; \
     sh /usr/local/src/httpd.sh; \
     make -j"$(nproc)"; \
     make install; \
-    # Apache-specific config
+    # Log config
     chown -R www-data:www-data /var/www && \
     ln -sfT /dev/stderr /var/log/error_log && \
     ln -sfT /dev/stdout /var/log/access_log; \
@@ -39,32 +40,32 @@ RUN set -eux; \
     wget -q https://getcomposer.org/download/${COMPOSER_VERSION}/composer.phar; \
     mv composer.phar /usr/bin/composer; \
     chmod +x /usr/bin/composer; \
-    # Strip binaries to reduce image size
+    # Strip executables (safe-fail)
     find /usr/local/bin/ -type f -executable -exec strip --strip-unneeded {} \; || true; \
-    # Identify runtime .so dependencies and install them
+    # Determine runtime .so deps and install
     deps="$( \
     scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
-    | tr ',' '\n' \
-    | sort -u \
-    | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
+      | tr ',' '\n' \
+      | sort -u \
+      | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
     )"; \
     apk add --no-network --virtual .httpd-so-deps $deps; \
-    # Remove build tools only
+    # Remove build tools
     apk del .build-tools; \
-    # Cleanup sources and temp files
+    # Cleanup
     rm -rf /usr/local/src/* /var/www/man* /etc/php /var/www/htdocs/index.html
 
-# Copy configurations and binaries
+# Copy configs & startup script
 COPY --chown=www-data:www-data conf/httpd /etc/httpd/conf
 COPY --chown=www-data:www-data --chmod=755 apache2-foreground /apache2-foreground
 
-# Expose web ports
+# Expose HTTP/HTTPS
 EXPOSE 80 443
 
-# Healthcheck for container monitoring
+# Healthcheck
 HEALTHCHECK --interval=30s --timeout=5s CMD curl -f http://localhost/ || exit 1
 
-# Set working directory
+# Set workdir, user, and entrypoint
 WORKDIR /var/www/htdocs
 
 # Run as non-root user
