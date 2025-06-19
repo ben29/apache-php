@@ -43,7 +43,22 @@
     --disable-proxy-wstunnel \
     --disable-proxy-fdpass \
     --disable-proxy-html \
-    --disable-auth-* \
+    --disable-auth-basic \
+    --disable-auth-digest \
+    --disable-auth-form \
+    --disable-authn-core \
+    --disable-authn-file \
+    --disable-authn-dbm \
+    --disable-authn-dbd \
+    --disable-authn-anon \
+    --disable-authn-socache \
+    --disable-authz-core \
+    --disable-authz-host \
+    --disable-authz-groupfile \
+    --disable-authz-user \
+    --disable-authz-dbm \
+    --disable-authz-owner \
+    --disable-authz-dbd \
     --disable-cache \
     --disable-socache-* \
     --disable-md \
