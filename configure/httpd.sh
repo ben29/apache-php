@@ -19,7 +19,6 @@
     --enable-proxy-fcgi \
     --enable-so \
     --enable-mods-shared=reallyall \
-    --enable-mpms-shared=all \
     --disable-actions \
     --disable-authn-socache \
     --disable-file-cache \

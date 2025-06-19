@@ -15,6 +15,8 @@ RUN set -eux; \
     apk add --no-cache --virtual .runtime-libs \
       apr-dev apr-util-dev pcre-dev nghttp2-dev perl \
       libxml2-dev curl-dev libpng-dev icu-dev oniguruma-dev libzip-dev; \
+    # --- Create user ---
+    adduser -S -G www-data www-data; \
     # --- Build Apache ---
     cd /usr/local/src; \
     wget -q https://dlcdn.apache.org/httpd/httpd-${HTTPD_VERSION}.tar.gz; \
