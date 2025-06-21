@@ -49,18 +49,10 @@ RUN set -eux; \
     chmod +x /usr/bin/composer.phar; \
     # Strip executables (safe-fail)
     find /usr/local/bin/ -type f -executable -exec strip --strip-unneeded {} \; || true; \
-    # Determine runtime .so deps and install
-    deps="$( \
-    scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
-      | tr ',' '\n' \
-      | sort -u \
-      | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
-    )"; \
-    apk add --no-network --virtual .httpd-so-deps $deps; \
     # Remove build tools
     apk del .build-tools; \
     # PERMISSIONS \
-    chown -R www-data:www-data -R /etc/httpd; \
+    chown -R www-data:www-data /etc/httpd; \
     # Cleanup
     rm -rf /usr/local/src /var/www/man* /etc/php /etc/httpd/conf/* /var/www/htdocs/index.html
 
