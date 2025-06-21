@@ -11,9 +11,9 @@ COPY configure/ /usr/local/src
 # Install build and runtime dependencies
 RUN set -eux; \
     apk add --no-cache --virtual .build-tools \
-      g++ make gcc build-base wget libtool; \
+      g++ make gcc build-base wget libtool perl; \
     apk add --no-cache --virtual .runtime-libs \
-      pcre-dev openssl-dev expat-dev perl \
+      pcre-dev openssl-dev expat-dev \
       libxml2-dev curl-dev libpng-dev icu-dev oniguruma-dev libzip-dev libsodium-dev; \
     # --- Create user ---
     adduser -S -G www-data www-data; \
@@ -22,6 +22,12 @@ RUN set -eux; \
     wget -q https://dlcdn.apache.org/httpd/httpd-${HTTPD_VERSION}.tar.gz; \
     tar -xf httpd-${HTTPD_VERSION}.tar.gz; \
     cd httpd-${HTTPD_VERSION}; \
+    # APR & APT -UTIL \
+    wget -O srclib/apr.tar.gz https://dlcdn.apache.org/apr/apr-1.7.6.tar.gz; \
+    wget -O srclib/apr-util.tar.gz https://dlcdn.apache.org/apr/apr-util-1.6.3.tar.gz; \
+    mkdir -p srclib/apr srclib/apr-util; \
+    tar -zxf srclib/apr.tar.gz -C srclib/apr --strip-components=1; \
+    tar -zxf srclib/apr-util.tar.gz -C srclib/apr-util --strip-components=1; \
     sh /usr/local/src/httpd.sh; \
     make -j"$(nproc)"; \
     make install; \
