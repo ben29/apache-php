@@ -32,7 +32,6 @@ RUN set -eux; \
     make -j"$(nproc)"; \
     make install; \
     # Log config \
-    rm -rf /etc/httpd/conf; \
     chown -R www-data:www-data /var/www && \
     ln -sfT /dev/stderr /var/log/error_log && \
     ln -sfT /dev/stdout /var/log/access_log; \
@@ -61,9 +60,9 @@ RUN set -eux; \
     # Remove build tools
     apk del .build-tools; \
     # PERMISSIONS \
-    chown -R www-data:www-data -R /etc/httpd/conf; \
+    chown -R www-data:www-data -R /etc/httpd; \
     # Cleanup
-    rm -rf /usr/local/src/* /var/www/man* /etc/php /var/www/htdocs/index.html
+    rm -rf /usr/local/src /var/www/man* /etc/php /etc/httpd/conf/* /var/www/htdocs/index.html
 
 # Copy configs & startup script
 COPY --chown=www-data:www-data conf/httpd /etc/httpd/conf
