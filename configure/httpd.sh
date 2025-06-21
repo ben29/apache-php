@@ -1,13 +1,13 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 ./configure \
-		--prefix=/etc/httpd \
+    --prefix=/etc/httpd \
     --bindir=/usr/local/bin \
     --sbindir=/usr/local/bin \
     --datadir=/var/www \
     --mandir=/var/www \
     --with-mpm=event \
-    --enable-deflate \
+    --with-included-apr \
     --enable-unique-id \
     --enable-mods-static=all \
     --enable-logio \
@@ -16,8 +16,6 @@
     --enable-expires \
     --enable-reqtimeout \
     --enable-headers \
-    --enable-watchdog \
-    --enable-http2 \
     --enable-allowmethods \
     --enable-so \
     --disable-actions \

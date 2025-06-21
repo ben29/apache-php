@@ -1,6 +1,5 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
-gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)";
 PHP_CFLAGS="-fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64"
 PHP_CPPFLAGS="$PHP_CFLAGS"
 PHP_LDFLAGS="-Wl,-O1 -pie"
@@ -11,7 +10,6 @@ export \
     LDFLAGS="$PHP_LDFLAGS"
 
 ./configure \
-    "--build=${gnuArch}" \
     "--prefix=/etc/php" \
     "--bindir=/usr/local/bin" \
     "--sbindir=/usr/local/bin" \

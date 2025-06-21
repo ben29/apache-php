@@ -13,8 +13,8 @@ RUN set -eux; \
     apk add --no-cache --virtual .build-tools \
       g++ make gcc build-base wget libtool; \
     apk add --no-cache --virtual .runtime-libs \
-      apr-dev apr-util-dev pcre-dev nghttp2-dev perl \
-      libxml2-dev curl-dev libpng-dev icu-dev oniguruma-dev libzip-dev; \
+      pcre-dev openssl-dev expat-dev perl \
+      libxml2-dev curl-dev libpng-dev icu-dev oniguruma-dev libzip-dev libsodium-dev; \
     # --- Create user ---
     adduser -S -G www-data www-data; \
     # --- Build Apache ---
@@ -25,7 +25,8 @@ RUN set -eux; \
     sh /usr/local/src/httpd.sh; \
     make -j"$(nproc)"; \
     make install; \
-    # Log config
+    # Log config \
+    rm -rf /etc/httpd/conf; \
     chown -R www-data:www-data /var/www && \
     ln -sfT /dev/stderr /var/log/error_log && \
     ln -sfT /dev/stdout /var/log/access_log; \
