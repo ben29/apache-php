@@ -5,6 +5,9 @@ ARG HTTPD_VERSION=2.4.63
 ARG PHP_VERSION=8.4.8
 ARG COMPOSER_VERSION=2.8.9
 
+# Set ZEND thread stack size
+ENV ZEND_THREAD_STACK_SIZE=262144
+
 # Copy build scripts
 COPY configure/ /usr/local/src
 
