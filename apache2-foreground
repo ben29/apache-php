@@ -1,6 +1,9 @@
 #!/bin/sh
 set -e
 
+# Set the Zend thread stack size
+export ZEND_THREAD_STACK_SIZE=262144
+
 echo "[INFO] Starting Apache entrypoint script..."
 
 # Remove stack size limit
