@@ -1,67 +1,62 @@
-# ---- Build Apache, PHP, and Composer in a single layer ----
-FROM debian:12.11-slim
+FROM debian:bullseye-slim
 
 ARG HTTPD_VERSION=2.4.63
 ARG PHP_VERSION=8.4.8
+ARG COMPOSER_VERSION=2.8.9
+
+ENV DEBIAN_FRONTEND=noninteractive
 
 # Copy build scripts
 COPY configure/ /usr/local/src
 
 RUN set -eux; \
-    # Define dependencies
-    DEPEND="libapr1-dev libaprutil1-dev gcc libpcre3-dev zlib1g-dev libssl-dev \
-    libnghttp2-dev make libxml2-dev libcurl4-openssl-dev libpng-dev g++ \
-    libonig-dev libsodium-dev libzip-dev wget ca-certificates curl binutils"; \
-    # Install build dependencies
-    apt-get update && apt-get install -y --no-install-recommends $DEPEND; \
-    rm -rf /var/lib/apt/lists/*; \
-    # Build Apache HTTP Server
+    apt-get update; \
+    apt-get install -y --no-install-recommends \
+      g++ libpcre3-dev libssl-dev make libexpat1-dev pkg-config wget \
+      libxml2-dev zlib1g-dev libcurl4-openssl-dev libpng-dev libonig-dev libsodium-dev libzip-dev;
     cd /usr/local/src; \
     wget -q https://dlcdn.apache.org/httpd/httpd-${HTTPD_VERSION}.tar.gz; \
-    tar -xf httpd-${HTTPD_VERSION}.tar.gz; \
+    tar xf httpd-${HTTPD_VERSION}.tar.gz; \
     cd httpd-${HTTPD_VERSION}; \
+    wget -O srclib/apr.tar.gz https://dlcdn.apache.org/apr/apr-1.7.6.tar.gz; \
+    wget -O srclib/apr-util.tar.gz https://dlcdn.apache.org/apr/apr-util-1.6.3.tar.gz; \
+    mkdir -p srclib/apr srclib/apr-util; \
+    tar -zxf srclib/apr.tar.gz -C srclib/apr --strip-components=1; \
+    tar -zxf srclib/apr-util.tar.gz -C srclib/apr-util --strip-components=1; \
     sh /usr/local/src/httpd.sh; \
-    make -j "$(nproc)"; \
+    make -j"$(nproc)"; \
     make install; \
-    # Prepare logs and htdocs directory
-    chown -R www-data:www-data /var/www && \
-    ln -sfT /dev/stderr /var/log/error_log && \
-    ln -sfT /dev/stdout /var/log/access_log; \
-    # Build PHP (mod_php)
     cd /usr/local/src; \
     wget -q https://www.php.net/distributions/php-${PHP_VERSION}.tar.gz; \
     tar zxf php-${PHP_VERSION}.tar.gz; \
     cd php-${PHP_VERSION}; \
     sh /usr/local/src/php.sh; \
-    make -j "$(nproc)"; \
-    find -type f -name '*.a' -delete; \
+    make -j"$(nproc)"; \
     make install; \
-    # Install Composer
-    cd /usr/local/src; \
-    wget -q https://getcomposer.org/installer; \
-    php -n installer; \
-    mv composer.phar /usr/bin/; \
-    # Strip all binaries in /usr/local/bin
-    # Strip only the executable files in /usr/local/bin
-    find /usr/local/bin/ -type f -executable -exec strip --strip-unneeded {} \;; \
-    # Clean up build dependencies and unnecessary files
-    apt-get purge -y --auto-remove gcc make g++ wget binutils; \
-    apt autoremove -y; \
-    rm -rf installer /var/www/man* /usr/local/src/* /var/lib/apt/lists/* /etc/php /var/www/htdocs/index.html;
+    wget -q -O /usr/local/bin/composer.phar https://getcomposer.org/download/${COMPOSER_VERSION}/composer.phar; \
+    chmod +x /usr/local/bin/composer.phar; \
+    # Strip binaries to reduce size
+    find /usr/local/bin -type f -executable -exec strip --strip-unneeded {} + || true; \
+    # Remove build tools
+    apt-get purge -y --auto-remove \
+    g++ libpcre3-dev libssl-dev make pkg-config wget \
+      build-essential libtool autoconf perl binutils; \
+    # Cleanup
+    rm -rf /usr/local/src /var/lib/apt/lists/* /var/www/man* /etc/php /etc/httpd/conf/* /var/www/htdocs/index.html
+    chown -R www-data:www-data /var/www /etc/httpd; \
+    ln -sfT /dev/stderr /var/log/error_log; \
+    ln -sfT /dev/stdout /var/log/access_log
 
-# Copy configurations and binaries
+# Copy configs & startup script
 COPY --chown=www-data:www-data conf/httpd /etc/httpd/conf
 COPY --chown=www-data:www-data --chmod=755 apache2-foreground /apache2-foreground
+COPY conf/php/php.ini /etc
 
-# Set working directory
-WORKDIR /var/www/htdocs
-
-# Expose ports
+# Expose HTTP/HTTPS
 EXPOSE 80 443
 
-# Healthcheck
-HEALTHCHECK --interval=30s --timeout=5s \
-    CMD curl -f http://localhost/ || exit 1
+# Set workdir, user, and entrypoint
+WORKDIR /var/www/htdocs
 
 # Run as non-root user
 USER www-data
