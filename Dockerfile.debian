@@ -42,7 +42,7 @@ RUN set -eux; \
     g++ libpcre3-dev libssl-dev make pkg-config wget \
       build-essential libtool autoconf perl binutils; \
     # Cleanup
-    rm -rf /usr/local/src /var/lib/apt/lists/* /var/www/man* /etc/php /etc/httpd/conf/* /var/www/htdocs/index.html
+    rm -rf /usr/local/src /var/lib/apt/lists/* /var/www/man* /etc/php /etc/httpd/conf/* /var/www/htdocs/index.html; \
     chown -R www-data:www-data /var/www /etc/httpd; \
     ln -sfT /dev/stderr /var/log/error_log; \
     ln -sfT /dev/stdout /var/log/access_log
