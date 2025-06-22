@@ -1,14 +1,8 @@
 #!/usr/bin/env sh
 
-# Set compiler and linker flags
-PHP_CFLAGS="-fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64"
-PHP_CPPFLAGS="$PHP_CFLAGS"
-PHP_LDFLAGS="-Wl,-O1 -pie -z stack-size=0x80000"
-
-export \
-    CFLAGS="$PHP_CFLAGS" \
-    CPPFLAGS="$PHP_CPPFLAGS" \
-    LDFLAGS="$PHP_LDFLAGS"
+export CFLAGS="-fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64"
+export CPPFLAGS="$CFLAGS"
+export LDFLAGS="-Wl,-O1 -pie -Wl,-z,stack-size=0x80000"
 
 # Run PHP configure with modules and options
 ./configure \
