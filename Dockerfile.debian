@@ -40,7 +40,7 @@ RUN set -eux; \
     find /usr/local/bin -type f -executable -exec strip --strip-unneeded {} + || true; \
     # Remove build tools
     apt-get purge -y --auto-remove \
-    g++ libpcre3-dev libssl-dev make pkg-config wget \
+    g++ libssl-dev make pkg-config wget \
       build-essential libtool autoconf perl binutils; \
     # Cleanup
     rm -rf /usr/local/src /var/lib/apt/lists/* /var/www/man* /etc/php /etc/httpd/conf/* /var/www/htdocs/index.html; \
