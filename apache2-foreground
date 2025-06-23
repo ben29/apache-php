@@ -3,10 +3,6 @@ set -e
 
 echo "[INFO] Starting Apache entrypoint script..."
 
-# Set the Zend thread stack size
-export ZEND_THREAD_STACK_SIZE="${ZEND_THREAD_STACK_SIZE:-262144}"
-echo "[INFO] Starting Apache with ZEND_THREAD_STACK_SIZE=$ZEND_THREAD_STACK_SIZE"
-
 # Remove stack size limit
 echo "[INFO] Setting unlimited stack size..."
 ulimit -s unlimited
