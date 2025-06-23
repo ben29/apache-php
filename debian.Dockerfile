@@ -10,17 +10,16 @@ ENV DEBIAN_FRONTEND=noninteractive
 COPY configure/ /usr/local/src
 
 RUN set -eux; \
-    OPTION="--no-check-certificate"; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
-      g++ libpcre3-dev libssl-dev make libexpat1-dev pkg-config wget \
+      g++ libpcre3-dev libssl-dev make libexpat1-dev pkg-config wget ca-certificates \
       libxml2-dev zlib1g-dev libcurl4-openssl-dev libpng-dev libonig-dev libsodium-dev libzip-dev; \
     cd /usr/local/src; \
-    wget ${OPTION} https://dlcdn.apache.org/httpd/httpd-${HTTPD_VERSION}.tar.gz; \
+    wget https://dlcdn.apache.org/httpd/httpd-${HTTPD_VERSION}.tar.gz; \
     tar xf httpd-${HTTPD_VERSION}.tar.gz; \
     cd httpd-${HTTPD_VERSION}; \
-    wget ${OPTION} -O srclib/apr.tar.gz https://dlcdn.apache.org/apr/apr-1.7.6.tar.gz; \
-    wget ${OPTION} -O srclib/apr-util.tar.gz https://dlcdn.apache.org/apr/apr-util-1.6.3.tar.gz; \
+    wget -O srclib/apr.tar.gz https://dlcdn.apache.org/apr/apr-1.7.6.tar.gz; \
+    wget -O srclib/apr-util.tar.gz https://dlcdn.apache.org/apr/apr-util-1.6.3.tar.gz; \
     mkdir -p srclib/apr srclib/apr-util; \
     tar -zxf srclib/apr.tar.gz -C srclib/apr --strip-components=1; \
     tar -zxf srclib/apr-util.tar.gz -C srclib/apr-util --strip-components=1; \
@@ -28,13 +27,13 @@ RUN set -eux; \
     make -j"$(nproc)"; \
     make install; \
     cd /usr/local/src; \
-    wget ${OPTION} https://www.php.net/distributions/php-${PHP_VERSION}.tar.gz; \
+    wget https://www.php.net/distributions/php-${PHP_VERSION}.tar.gz; \
     tar zxf php-${PHP_VERSION}.tar.gz; \
     cd php-${PHP_VERSION}; \
     sh /usr/local/src/php.sh; \
     make -j"$(nproc)"; \
     make install; \
-    wget ${OPTION} -q -O /usr/local/bin/composer.phar https://getcomposer.org/download/${COMPOSER_VERSION}/composer.phar; \
+    wget -O /usr/local/bin/composer.phar https://getcomposer.org/download/${COMPOSER_VERSION}/composer.phar; \
     chmod +x /usr/local/bin/composer.phar; \
     # Strip binaries to reduce size
     find /usr/local/bin -type f -executable -exec strip --strip-unneeded {} + || true; \
