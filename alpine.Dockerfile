@@ -4,6 +4,7 @@ FROM alpine:3.22.0
 ARG HTTPD_VERSION=2.4.63
 ARG PHP_VERSION=8.4.8
 ARG COMPOSER_VERSION=2.8.9
+ENV PTHREAD_STACK_MIN=2097152
 
 # Copy build scripts
 COPY configure/ /usr/local/src
