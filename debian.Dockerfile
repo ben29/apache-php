@@ -10,8 +10,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 COPY configure/ /usr/local/src
 
 RUN set -eux; \
-    apt-get update; \
-    apt-get install -y --no-install-recommends \
+    apt update; \
+    apt install -y --no-install-recommends \
       g++ libpcre3-dev libssl-dev make libexpat1-dev pkg-config wget ca-certificates \
       libxml2-dev zlib1g-dev libcurl4-openssl-dev libpng-dev libonig-dev libsodium-dev libzip-dev; \
     cd /usr/local/src; \
@@ -38,9 +38,10 @@ RUN set -eux; \
     # Strip binaries to reduce size
     find /usr/local/bin -type f -executable -exec strip --strip-unneeded {} + || true; \
     # Remove build tools
-    apt-get purge -y --auto-remove \
-    g++ libssl-dev make pkg-config wget \
+    apt purge -y --auto-remove \
+      g++ libssl-dev make pkg-config wget \
       build-essential libtool autoconf perl binutils; \
+    apt remove -y libicu-dev icu-devtools; \
     # Cleanup
     rm -rf /usr/local/src /var/lib/apt/lists/* /var/www/man* /etc/php /etc/httpd/conf/* /var/www/htdocs/index.html; \
     chown -R www-data:www-data /var/www /etc/httpd; \
