@@ -1,9 +1,9 @@
 # ---- Build Apache, PHP, and Composer in a single layer with Alpine ----
 FROM alpine:3.22.1
 
-ARG HTTPD_VERSION=2.4.63
-ARG PHP_VERSION=8.4.8
-ARG COMPOSER_VERSION=2.8.9
+ARG HTTPD_VERSION=2.4.64
+ARG PHP_VERSION=8.4.10
+ARG COMPOSER_VERSION=2.8.10
 
 # Copy build scripts
 COPY configure/ /usr/local/src
