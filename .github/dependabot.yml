@@ -37,3 +37,13 @@ updates:
       interval: "daily"
       time: "09:00"
       timezone: "UTC"
+
+automerged_updates:
+  security-updates: true
+  version-requirement: "increase"
+  allowed:
+    - dependency-type: "direct"
+    - dependency-type: "indirect"
+  update-types:
+    - "version-update:semver-patch"
+    - "version-update:semver-minor"
