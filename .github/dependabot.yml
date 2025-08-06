@@ -11,10 +11,29 @@ updates:
     open-pull-requests-limit: 20
     schedule:
       interval: "daily"
+      time: "09:00"
+      timezone: "UTC"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
 
   - package-ecosystem: "docker"
     directory: "/"
+    dockerfile: "alpine.Dockerfile"
     target-branch: "main"
-    open-pull-requests-limit: 20
+    open-pull-requests-limit: 10
     schedule:
       interval: "daily"
+      time: "09:00"
+      timezone: "UTC"
+
+  - package-ecosystem: "docker"
+    directory: "/"
+    dockerfile: "debian.Dockerfile"
+    target-branch: "main"
+    open-pull-requests-limit: 10
+    schedule:
+      interval: "daily"
+      time: "09:00"
+      timezone: "UTC"
