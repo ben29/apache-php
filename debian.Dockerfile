@@ -1,8 +1,8 @@
-FROM debian:12.11-slim
+FROM debian:13.1-slim
 
 ARG HTTPD_VERSION=2.4.65
-ARG PHP_VERSION=8.4.12
-ARG COMPOSER_VERSION=2.8.11
+ARG PHP_VERSION=8.4.13
+ARG COMPOSER_VERSION=2.8.12
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -12,7 +12,7 @@ COPY configure/ /usr/local/src
 RUN set -eux; \
     apt update; \
     apt install -y --no-install-recommends \
-      g++ libpcre3-dev libssl-dev make libexpat1-dev pkg-config wget ca-certificates \
+      g++ libpcre2-dev libicu-dev libssl-dev make libexpat1-dev pkg-config wget ca-certificates \
       libxml2-dev zlib1g-dev libcurl4-openssl-dev libpng-dev libonig-dev libsodium-dev libzip-dev; \
     cd /usr/local/src; \
     wget https://dlcdn.apache.org/httpd/httpd-${HTTPD_VERSION}.tar.gz; \
