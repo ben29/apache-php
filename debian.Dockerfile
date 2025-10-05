@@ -42,6 +42,8 @@ RUN set -eux; \
       g++ libssl-dev make pkg-config wget \
       build-essential libtool autoconf perl binutils; \
     apt remove -y libicu-dev icu-devtools; \
+    # NEED
+    apt install -y libnghttp2-dev libbrotli-dev libcurl4t64; \
     # Cleanup
     rm -rf /usr/local/src /var/lib/apt/lists/* /var/www/man* /etc/php /etc/httpd/conf/* /var/www/htdocs/index.html; \
     chown -R www-data:www-data /var/www /etc/httpd; \
