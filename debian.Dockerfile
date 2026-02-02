@@ -1,8 +1,8 @@
 FROM debian:13.2-slim
 
-ARG HTTPD_VERSION=2.4.65
-ARG PHP_VERSION=8.4.14
-ARG COMPOSER_VERSION=2.8.12
+ARG HTTPD_VERSION=2.4.66
+ARG PHP_VERSION=8.5.2
+ARG COMPOSER_VERSION=2.9.5
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -35,7 +35,7 @@ RUN set -eux; \
     make install; \
     wget -O /usr/local/bin/composer.phar https://getcomposer.org/download/${COMPOSER_VERSION}/composer.phar; \
     chmod +x /usr/local/bin/composer.phar; \
-    # Strip binaries to reduce size
+    # Strip binaries to reduce size \
     find /usr/local/bin -type f -executable -exec strip --strip-unneeded {} + || true; \
     # Remove build tools
     apt purge -y --auto-remove \

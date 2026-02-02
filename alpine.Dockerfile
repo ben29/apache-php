@@ -1,9 +1,9 @@
 # ---- Build Apache, PHP, and Composer in a single layer with Alpine ----
 FROM alpine:3.23.2
 
-ARG HTTPD_VERSION=2.4.64
-ARG PHP_VERSION=8.4.10
-ARG COMPOSER_VERSION=2.8.10
+ARG HTTPD_VERSION=2.4.66
+ARG PHP_VERSION=8.5.2
+ARG COMPOSER_VERSION=2.9.5
 
 # Copy build scripts
 COPY configure/ /usr/local/src
@@ -15,9 +15,9 @@ RUN set -eux; \
     apk add --no-cache --virtual .runtime-libs \
       pcre-dev openssl-dev expat-dev \
       libxml2-dev curl-dev libpng-dev icu-dev oniguruma-dev libzip-dev libsodium-dev; \
-    # --- Create user ---
+    # --- Create user --- \
     adduser -S -G www-data www-data; \
-    # --- Build Apache ---
+    # --- Build Apache --- \
     cd /usr/local/src; \
     wget -q https://dlcdn.apache.org/httpd/httpd-${HTTPD_VERSION}.tar.gz; \
     tar -xf httpd-${HTTPD_VERSION}.tar.gz; \
@@ -35,7 +35,7 @@ RUN set -eux; \
     chown -R www-data:www-data /var/www && \
     ln -sfT /dev/stderr /var/log/error_log && \
     ln -sfT /dev/stdout /var/log/access_log; \
-    # --- Build PHP (mod_php) ---
+    # --- Build PHP (mod_php) --- \
     cd /usr/local/src; \
     wget -q https://www.php.net/distributions/php-${PHP_VERSION}.tar.gz; \
     tar zxf php-${PHP_VERSION}.tar.gz; \
@@ -43,17 +43,17 @@ RUN set -eux; \
     sh /usr/local/src/php.sh; \
     make -j"$(nproc)"; \
     make install; \
-    # --- Install Composer ---
+    # --- Install Composer --- \
     cd /usr/local/src; \
     wget -q -O /usr/bin/composer.phar https://getcomposer.org/download/${COMPOSER_VERSION}/composer.phar; \
     chmod +x /usr/bin/composer.phar; \
-    # Strip executables (safe-fail)
+    # Strip executables (safe-fail) \
     find /usr/local/bin/ -type f -executable -exec strip --strip-unneeded {} \; || true; \
-    # Remove build tools
+    # Remove build tools \
     apk del .build-tools; \
     # PERMISSIONS \
     chown -R www-data:www-data /etc/httpd; \
-    # Cleanup
+    # Cleanup \
     rm -rf /usr/local/src /var/www/man* /etc/php /etc/httpd/conf/* /var/www/htdocs/index.html
 
 # Copy configs & startup script
