@@ -49,4 +49,4 @@ jobs:
                         PHP_VERSION=${{ github.event.inputs.php }}
                         COMPOSER_VERSION=${{ github.event.inputs.composer }}
                     tags: |
-                        benhakim2010/php-apache:1.0
+                        benhakim2010/php-apache:1.1
