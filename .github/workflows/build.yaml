@@ -42,7 +42,7 @@ jobs:
                 uses: docker/build-push-action@v6.19.2
                 with:
                     context: .
-                    file: ./Dockerfile
+                    file: ./debian.Dockerfile
                     push: true
                     build-args: |
                         HTTPD_VERSION=${{ github.event.inputs.apache }}
