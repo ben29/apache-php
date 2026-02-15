@@ -7,17 +7,17 @@ on:
                 type: string
                 description: 'APACHE VERSION'
                 required: true
-                default: '2.4.63'
+                default: '2.4.66'
             php:
                 type: string
                 description: 'PHP VERSION'
                 required: true
-                default: '8.4.8'
+                default: '8.5.3'
             composer:
                 type: string
                 description: 'COMPOSER VERSION'
                 required: true
-                default: '2.8.9'
+                default: '2.9.5'
 jobs:
     docker:
         runs-on: ubuntu-latest
