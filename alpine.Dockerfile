@@ -2,8 +2,8 @@
 
 FROM alpine:3.24.1
 ARG HTTPD_VERSION=2.4.68
-ARG PHP_VERSION=8.5.7
-ARG COMPOSER_VERSION=2.10.1
+ARG PHP_VERSION=8.5.8
+ARG COMPOSER_VERSION=2.10.2
 
 # Copy build scripts
 COPY configure/ /usr/local/src
