@@ -12,7 +12,7 @@ on:
                 type: string
                 description: 'PHP VERSION'
                 required: true
-                default: '8.5.8'
+                default: '8.5.9'
             composer:
                 type: string
                 description: 'COMPOSER VERSION'
