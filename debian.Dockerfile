@@ -1,7 +1,7 @@
 FROM debian:13.6-slim
 
 ARG HTTPD_VERSION=2.4.68
-ARG PHP_VERSION=8.5.8
+ARG PHP_VERSION=8.5.9
 ARG COMPOSER_VERSION=2.10.2
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -19,7 +19,7 @@ RUN set -eux; \
     tar xf httpd-${HTTPD_VERSION}.tar.gz; \
     cd httpd-${HTTPD_VERSION}; \
     wget -O srclib/apr.tar.gz https://dlcdn.apache.org/apr/apr-1.7.6.tar.gz; \
-    wget -O srclib/apr-util.tar.gz https://dlcdn.apache.org/apr/apr-util-1.6.3.tar.gz; \
+    wget -O srclib/apr-util.tar.gz https://dlcdn.apache.org/apr/apr-util-1.6.6.tar.gz; \
     mkdir -p srclib/apr srclib/apr-util; \
     tar -zxf srclib/apr.tar.gz -C srclib/apr --strip-components=1; \
     tar -zxf srclib/apr-util.tar.gz -C srclib/apr-util --strip-components=1; \
