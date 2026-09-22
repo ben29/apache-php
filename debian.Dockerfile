@@ -1,4 +1,4 @@
-FROM debian:13.6-slim
+FROM debian:13.7-slim
 
 ARG HTTPD_VERSION=2.4.68
 ARG PHP_VERSION=8.5.9
